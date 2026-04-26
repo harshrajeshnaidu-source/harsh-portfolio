@@ -1,14 +1,12 @@
-[build]
-  functions = "netlify/functions"
-  publish = "."
-
-[[headers]]
-  for = "/.netlify/functions/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+[functions]
+  directory = "netlify/functions"
 
 [[redirects]]
   from = "/api/habits"
   to = "/.netlify/functions/habits"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
   status = 200
