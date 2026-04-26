@@ -3,7 +3,7 @@
 // Deploy this to Netlify. Set NOTION_TOKEN in Netlify environment variables.
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const DATABASE_ID = "e9270383-59ce-4dcc-a942-57f518360504";
+const DATABASE_ID = "2def2acebee84dc19145131c0d7f1f89";
 
 const HABITS = [
   { key: "Wake 6am",                emoji: "☀️",  track: "Daily System" },
