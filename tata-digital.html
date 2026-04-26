@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="description" content="How I ran multi-brand campaign operations across 5 Tata brands simultaneously — 25,000+ creatives, zero missed deadlines."/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tata Digital · Case Study · Harsh Naidu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0F1720;
+  --bg2:     #131E2A;
+  --surface: #182430;
+  --border:  #1E2D3D;
+  --teal:    #00A8A8;
+  --text:    #E6F1F2;
+  --text2:   #94A3B8;
+  --text3:   #4A6278;
+  --sans:    'Space Grotesk', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --max:     1100px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(20px,4vw,60px); height: 64px;
+  background: rgba(15,23,32,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-decoration: none; color: var(--text); text-transform: uppercase; }
+.nav-logo .teal { color: var(--teal); }
+.nav-right { display: flex; align-items: center; gap: 28px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text); font-weight: 600; transition: color 0.2s; }
+.nav-links a:hover { color: var(--teal); }
+.nav-status { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text3); border: 1px solid var(--border); padding: 6px 12px; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 6px var(--teal); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.btn-nav { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: #0F1720; background: var(--teal); padding: 10px 20px; transition: opacity 0.2s; }
+.btn-nav:hover { opacity: 0.85; }
+
+/* HERO */
+.cs-hero {
+  border-bottom: 1px solid var(--border);
+  padding: 80px clamp(20px,4vw,60px) 64px;
+  position: relative; overflow: hidden;
+}
+.cs-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 60% at 15% 50%, rgba(0,168,168,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cs-hero-inner { max-width: var(--max); margin: 0 auto; position: relative; }
+.cs-breadcrumb { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3); margin-bottom: 32px; }
+.cs-breadcrumb a { color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.cs-breadcrumb a:hover { color: var(--teal); }
+.cs-breadcrumb span { color: var(--border); }
+.cs-tag { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); border: 1px solid rgba(0,168,168,0.3); padding: 5px 12px; margin-bottom: 20px; }
+.cs-title { font-family: var(--sans); font-size: clamp(40px,6vw,80px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 28px; }
+.cs-title span { color: var(--teal); }
+.cs-lead { font-family: var(--sans); font-size: clamp(16px,2vw,20px); color: var(--text2); max-width: 640px; line-height: 1.6; margin-bottom: 48px; }
+
+/* STATS */
+.cs-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 800px; }
+.cs-stat { background: var(--bg2); padding: 24px 28px; }
+.cs-stat-num { font-family: var(--sans); font-size: clamp(28px,3.5vw,40px); font-weight: 700; color: var(--teal); letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px; }
+.cs-stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.5; }
+
+/* META ROW */
+.cs-meta-row { display: flex; gap: 40px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+.cs-meta-item { display: flex; flex-direction: column; gap: 5px; }
+.cs-meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); }
+.cs-meta-value { font-family: var(--mono); font-size: 12px; color: var(--text2); letter-spacing: 0.05em; }
+
+/* BODY */
+.cs-body { max-width: var(--max); margin: 0 auto; padding: 0 clamp(20px,4vw,60px) 80px; }
+.cs-section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+.cs-section:last-child { border-bottom: none; }
+.cs-section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.cs-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 60px; }
+.cs-section-title { font-family: var(--sans); font-size: clamp(24px,3vw,36px); font-weight: 700; letter-spacing: -0.025em; color: var(--text); margin-bottom: 24px; line-height: 1.1; }
+.cs-body-text { font-family: var(--sans); font-size: 16px; color: var(--text2); line-height: 1.75; max-width: 680px; }
+.cs-body-text p { margin-bottom: 16px; }
+.cs-body-text p:last-child { margin-bottom: 0; }
+.cs-body-text strong { color: var(--text); font-weight: 600; }
+
+/* TWO COL */
+.cs-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.cs-two-col.wide-left { grid-template-columns: 3fr 2fr; }
+@media (max-width: 720px) { .cs-two-col, .cs-two-col.wide-left { grid-template-columns: 1fr; } }
+
+/* CALLOUT */
+.cs-callout { background: rgba(0,168,168,0.05); border-left: 3px solid var(--teal); padding: 24px 28px; margin: 32px 0; }
+.cs-callout p { font-family: var(--mono); font-size: 13px; color: var(--text2); line-height: 1.7; letter-spacing: 0.02em; }
+.cs-callout strong { color: var(--teal); }
+
+/* LIST */
+.cs-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.cs-list li { display: flex; gap: 14px; align-items: flex-start; font-family: var(--sans); font-size: 15px; color: var(--text2); line-height: 1.5; }
+.cs-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; margin-top: 8px; }
+
+/* PHASES */
+.cs-phases { display: flex; flex-direction: column; }
+.cs-phase { display: grid; grid-template-columns: 80px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.cs-phase:last-child { border-bottom: none; }
+.cs-phase-num { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; padding-top: 3px; }
+.cs-phase-title { font-family: var(--sans); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.cs-phase-desc { font-family: var(--sans); font-size: 14px; color: var(--text2); line-height: 1.65; }
+.cs-phase-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.cs-phase-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); border: 1px solid var(--border); padding: 4px 10px; }
+
+/* BRAND CARDS */
+.brand-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 40px 0; }
+@media (max-width: 700px) { .brand-grid { grid-template-columns: repeat(3,1fr); } }
+.brand-card { background: var(--bg2); padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.brand-card.primary { background: rgba(0,168,168,0.06); }
+.brand-name { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--text); }
+.brand-sector { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); }
+.brand-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* SCALE TABLE */
+.scale-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); margin: 32px 0; }
+.scale-table th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); padding: 14px 20px; text-align: left; background: var(--surface); border-bottom: 1px solid var(--border); }
+.scale-table td { font-family: var(--mono); font-size: 12px; color: var(--text2); padding: 14px 20px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+.scale-table tr:last-child td { border-bottom: none; }
+.scale-table td:first-child { color: var(--text); font-weight: 500; }
+.scale-table td .teal { color: var(--teal); font-weight: 600; }
+
+/* RESULTS */
+.cs-results { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 40px; }
+@media (max-width: 600px) { .cs-results { grid-template-columns: 1fr; } }
+.cs-result { background: var(--bg2); padding: 28px 24px; }
+.cs-result-num { font-family: var(--sans); font-size: 36px; font-weight: 700; color: var(--teal); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+.cs-result-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.cs-result-desc { font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.6; }
+
+/* LEARNINGS */
+.cs-learning { display: grid; grid-template-columns: 40px 1fr; gap: 20px; align-items: start; padding: 24px 0; border-bottom: 1px solid var(--border); }
+.cs-learning:last-child { border-bottom: none; }
+.cs-learning-num { font-family: var(--mono); font-size: 11px; color: var(--teal); letter-spacing: 0.1em; padding-top: 2px; }
+.cs-learning-text { font-family: var(--sans); font-size: 15px; color: var(--text2); line-height: 1.65; }
+.cs-learning-text strong { color: var(--text); font-weight: 600; }
+
+/* IMAGE PLACEHOLDERS */
+.cs-img-placeholder { width: 100%; background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text3); min-height: 260px; }
+.cs-img-placeholder .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+.cs-img-placeholder .sublabel { font-family: var(--mono); font-size: 9px; color: var(--border); }
+.cs-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
+@media (max-width: 560px) { .cs-img-grid { grid-template-columns: 1fr; } }
+
+/* FOOTER NAV */
+.cs-footer-nav { border-top: 1px solid var(--border); padding: 40px clamp(20px,4vw,60px); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.cs-footer-back { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text3); transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+.cs-footer-back:hover { color: var(--teal); }
+.cs-footer-next { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text2); transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+.cs-footer-next:hover { color: var(--teal); }
+.cs-footer-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--text3); margin-bottom: 4px; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="harsh_naidu_portfolio_v3.html"><span class="teal">//</span> HARSH NAIDU</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <a href="harsh_naidu_portfolio_v3.html#thinking">Thinking</a>
+      <a href="system.html">System</a>
+      <a href="harsh_naidu_portfolio_v3.html#about">About</a>
+      <a href="harsh_naidu_portfolio_v3.html#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span class="status-dot"></span>Toronto · Open to opportunities</div>
+    <a href="harsh_naidu_portfolio_v3.html#contact" class="btn-nav">Let's talk →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-hero-inner">
+    <div class="cs-breadcrumb">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <span>/</span>
+      <span style="color:var(--text2)">Case 02 of 04</span>
+      <span>/</span>
+      <span style="color:var(--text)">Tata Digital</span>
+    </div>
+
+    <div class="cs-tag">Enterprise · Creative Ops · Paid Media</div>
+    <h1 class="cs-title">Campaign ops at<br><span>enterprise scale.</span><br>Zero margin for error.</h1>
+    <p class="cs-lead">Tata Digital runs some of India's most recognised consumer brands simultaneously. I owned multi-brand campaign operations across 5 brands — managing 25,000+ creatives, coordinating cross-functional production, and building the operational infrastructure that kept it all moving without breaking.</p>
+
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-num">25K+</div>
+        <div class="cs-stat-label">Creatives produced<br>across 5 brands</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">5</div>
+        <div class="cs-stat-label">Simultaneous<br>Tata brands</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">0</div>
+        <div class="cs-stat-label">Missed campaign<br>launch deadlines</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">3×</div>
+        <div class="cs-stat-label">Creative output<br>throughput increase</div>
+      </div>
+    </div>
+
+    <div class="cs-meta-row">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Company</span>
+        <span class="cs-meta-value">Tata Digital</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Industry</span>
+        <span class="cs-meta-value">Enterprise · Consumer Tech</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Role</span>
+        <span class="cs-meta-value">Campaign Manager · Creative Ops</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Brands</span>
+        <span class="cs-meta-value">Tata Neu · AirAsia · Croma · Cult.fit · IHCL</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Function</span>
+        <span class="cs-meta-value">Paid Media · Creative Production · Ops</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="cs-body">
+
+  <!-- 01 CONTEXT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">01 · Context</div>
+    <div class="cs-two-col wide-left">
+      <div>
+        <h2 class="cs-section-title">Five brands. One ops layer. Constant pressure.</h2>
+        <div class="cs-body-text">
+          <p>Tata Digital is the digital arm of the Tata Group — one of India's most iconic conglomerates. Its mandate: build and operate a portfolio of consumer digital products across verticals, anchored by the Tata Neu super app.</p>
+          <p>The brands I worked across spanned fintech, travel, retail, wellness, and hospitality. Each had its own brand identity, tone of voice, target audience, campaign calendar, and performance KPIs. Each demanded creatives that looked and felt brand-native — not templated, not generic.</p>
+          <p>The challenge wasn't any single campaign. It was <strong>running all of them simultaneously</strong> without the quality, timeline, or brand standards of any one slipping. At enterprise scale, operational excellence is a competitive advantage in its own right.</p>
+        </div>
+      </div>
+      <div>
+        <div class="cs-callout">
+          <p><strong>The environment:</strong> Enterprise marketing ops at this scale isn't just project management. It's systems thinking applied to people, process, and creative production simultaneously — while the campaigns are live and deadlines don't move.</p>
+        </div>
+        <div style="margin-top: 20px; padding: 20px; background: var(--surface); border: 1px solid var(--border);">
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px;">Operating environment</div>
+          <ul class="cs-list">
+            <li>5 live brands with independent campaign calendars</li>
+            <li>Multiple agencies, studios, and internal teams in production pipeline</li>
+            <li>Creatives required across every major paid channel and format</li>
+            <li>Brand standards non-negotiable — each brand had distinct visual identity</li>
+            <li>Launches tied to external events, festivals, and product milestones</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand grid -->
+    <div class="brand-grid" style="margin-top: 48px;">
+      <div class="brand-card primary">
+        <div class="brand-dot" style="background: var(--teal);"></div>
+        <div class="brand-name">Tata Neu</div>
+        <div class="brand-sector">Super App</div>
+      </div>
+      <div class="brand-card">
+        <div class="brand-dot" style="background: #60a5fa;"></div>
+        <div class="brand-name">AirAsia India</div>
+        <div class="brand-sector">Travel</div>
+      </div>
+      <div class="brand-card">
+        <div class="brand-dot" style="background: #f472b6;"></div>
+        <div class="brand-name">Croma</div>
+        <div class="brand-sector">Electronics Retail</div>
+      </div>
+      <div class="brand-card">
+        <div class="brand-dot" style="background: #34d399;"></div>
+        <div class="brand-name">Cult.fit</div>
+        <div class="brand-sector">Health &amp; Wellness</div>
+      </div>
+      <div class="brand-card">
+        <div class="brand-dot" style="background: #fb923c;"></div>
+        <div class="brand-name">IHCL</div>
+        <div class="brand-sector">Hospitality</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 PROBLEM -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">02 · Problem</div>
+    <h2 class="cs-section-title">Volume, velocity, and brand integrity — simultaneously.</h2>
+    <div class="cs-two-col">
+      <div class="cs-body-text">
+        <p>The core tension at Tata Digital wasn't a lack of talent or budget — it was a structural one. The organisation had scaled its brand portfolio faster than its production infrastructure. The result: a creative ops function that was permanently reactive, always catching up, always at risk of a brand inconsistency slipping through at volume.</p>
+        <p><strong>Volume problem:</strong> 25,000+ creatives across 5 brands is an extraordinary throughput requirement. At that scale, any manual review step, any unclear brief template, or any approval bottleneck multiplies into delays across the entire portfolio.</p>
+        <p><strong>Brand integrity problem:</strong> With multiple agencies and internal teams producing simultaneously, creative consistency was difficult to enforce. Each brand had its own visual language — and at enterprise scale, one off-brand creative in a live campaign is a reputational risk, not just a design error.</p>
+      </div>
+      <div>
+        <div style="background: var(--surface); border: 1px solid var(--border); padding: 28px;">
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 20px;">The three failure modes to solve</div>
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div>
+              <div style="font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Production bottlenecks</div>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.6;">Brief-to-delivery pipelines that slowed under volume, missing launch windows.</div>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+              <div style="font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Brand consistency at scale</div>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.6;">Off-brand creative making it to live without a scalable QA layer.</div>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+              <div style="font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Cross-brand coordination</div>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.6;">Five brands competing for the same internal resources, with no priority framework.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 STRATEGY -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">03 · Strategy</div>
+    <h2 class="cs-section-title">Build the machine before running it faster.</h2>
+    <div class="cs-body-text" style="margin-bottom: 40px;">
+      <p>The instinct under pressure is to add more people or more hours. The right move at this scale is to fix the process — so that every additional creative produced flows through a system that enforces quality automatically rather than relying on individual heroics. I focused on three structural changes before touching any individual campaign.</p>
+    </div>
+
+    <div class="cs-phases">
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 01</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Standardised brief architecture</div>
+          <div class="cs-phase-desc">Built a brief template system for each brand — structured briefs that captured audience, intent, format specs, tone guardrails, and performance objective in a single document. Reduced brief-to-brief-approval cycle from days to hours. Eliminated the most common source of revision cycles: ambiguity at briefing stage.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Brief Templates</span>
+            <span class="cs-phase-tag">Process Design</span>
+            <span class="cs-phase-tag">Stakeholder Alignment</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 02</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Creative QA framework</div>
+          <div class="cs-phase-desc">Designed a brand-by-brand QA checklist that any reviewer could run — not just senior creatives. Covered visual identity, tone, legal/compliance flags, format specifications, and platform requirements per channel. Moved QA from a judgement call to a structured review that scaled across team members and agencies without losing brand standards.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Quality Assurance</span>
+            <span class="cs-phase-tag">Brand Governance</span>
+            <span class="cs-phase-tag">Production Standards</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 03</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Cross-brand prioritisation model</div>
+          <div class="cs-phase-desc">Built a resource allocation framework that ranked competing brand demands against strategic priority, revenue impact, and campaign readiness. Gave the ops function a defensible way to sequence work and push back on ad hoc requests — without creating brand politics or blocking urgent launches.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Resource Planning</span>
+            <span class="cs-phase-tag">Stakeholder Management</span>
+            <span class="cs-phase-tag">Priority Framework</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 04</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Campaign performance tracking and iteration loop</div>
+          <div class="cs-phase-desc">Consolidated campaign performance reporting across brands into a single weekly view — click-through rates, conversion rates, ROAS, and creative fatigue signals by brand and format. Used this data to inform which creative formats to double down on, which to retire, and where to test new angles. Performance insight fed directly back into the next brief cycle.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Performance Analytics</span>
+            <span class="cs-phase-tag">Creative Testing</span>
+            <span class="cs-phase-tag">Dashboard Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 EXECUTION -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">04 · Execution</div>
+    <h2 class="cs-section-title">What 25,000 creatives actually looks like.</h2>
+    <div class="cs-body-text" style="margin-bottom: 40px;">
+      <p>At enterprise scale, execution isn't about doing things harder — it's about doing things in the right order, through the right structure. Here's what the production system looked like in practice across the 5-brand portfolio.</p>
+    </div>
+
+    <!-- Scale table -->
+    <table class="scale-table">
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Primary Channel Mix</th>
+          <th>Creative Formats</th>
+          <th>Volume Scale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="teal">Tata Neu</span></td>
+          <td>Meta · Google · App Stores · OTT</td>
+          <td>Static · Video · Story · App banners</td>
+          <td>Highest — anchor brand, all campaigns</td>
+        </tr>
+        <tr>
+          <td>AirAsia India</td>
+          <td>Meta · Google Search · Display</td>
+          <td>Static · Carousel · Dynamic product ads</td>
+          <td>High — seasonal + ongoing fare campaigns</td>
+        </tr>
+        <tr>
+          <td>Croma</td>
+          <td>Meta · Google Shopping · YouTube</td>
+          <td>Product static · Video · Catalogue</td>
+          <td>High — constant product launches + sales</td>
+        </tr>
+        <tr>
+          <td>Cult.fit</td>
+          <td>Meta · Instagram · YouTube</td>
+          <td>Video · Story · Reels · Static</td>
+          <td>Medium-high — membership + class promos</td>
+        </tr>
+        <tr>
+          <td>IHCL</td>
+          <td>Meta · Google · Display · OTT</td>
+          <td>Lifestyle static · Video · Rich media</td>
+          <td>Medium — premium brand, quality over volume</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cs-two-col" style="margin-top: 40px;">
+      <div class="cs-body-text">
+        <p><strong>Production pipeline:</strong> Each campaign moved through a defined flow — brief → agency/studio briefing → draft review → QA checklist → approval → trafficking → live monitoring. Every step had an owner and a timeframe. Nothing waited in an inbox.</p>
+        <p><strong>Tata Neu as anchor:</strong> As the super app that connected all five brands, Tata Neu campaigns required additional coordination — any Tata Neu creative that referenced another brand had to be approved by both brand teams. I managed this cross-brand approval layer without letting it become a bottleneck.</p>
+      </div>
+      <div class="cs-body-text">
+        <p><strong>Creative iteration system:</strong> Instead of treating each campaign as a standalone production, I built a rolling creative library per brand — top-performing formats, copy angles, and visual treatments that could be adapted for new campaigns rather than rebuilt from zero each time. This reduced production time significantly on repeat campaign types.</p>
+        <p><strong>Live monitoring:</strong> Once campaigns went live, daily performance monitoring across all brands flagged creative fatigue early — allowing underperforming creatives to be swapped before they dragged campaign ROAS, without waiting for a weekly review cycle.</p>
+      </div>
+    </div>
+
+    <!-- Image grid -->
+    <div class="cs-img-grid" style="margin-top: 40px;">
+      <div class="cs-img-placeholder">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="label">Campaign Creatives</span>
+        <span class="sublabel">Add Tata Digital ad creative samples</span>
+      </div>
+      <div class="cs-img-placeholder">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="label">Performance Dashboard</span>
+        <span class="sublabel">Add multi-brand campaign metrics screenshot</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 RESULTS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">05 · Results</div>
+    <h2 class="cs-section-title">What the system delivered.</h2>
+    <div class="cs-body-text" style="margin-bottom: 16px;">
+      <p>The structural changes compounded quickly. Within the first quarter of the new ops framework, production throughput increased, deadline adherence hit 100%, and brand consistency issues dropped to near zero across live campaigns.</p>
+    </div>
+
+    <div class="cs-results">
+      <div class="cs-result">
+        <div class="cs-result-num">25K+</div>
+        <div class="cs-result-title">Creatives Produced</div>
+        <div class="cs-result-desc">Across 5 brands, multiple channels, and every major format. All through a single ops layer without a production breakdown.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">3×</div>
+        <div class="cs-result-title">Output Throughput</div>
+        <div class="cs-result-desc">Creative production throughput increased 3× after implementing the brief architecture and QA framework. Same headcount, higher volume.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">100%</div>
+        <div class="cs-result-title">On-time Campaign Launches</div>
+        <div class="cs-result-desc">Zero missed launch deadlines across all five brands over the engagement. Enterprise campaigns cannot be rescheduled — the system had to hold.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">5</div>
+        <div class="cs-result-title">Brands, One Framework</div>
+        <div class="cs-result-desc">A single ops framework served five distinct brand identities simultaneously — without brand standards compromises or requiring separate systems per brand.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">↓</div>
+        <div class="cs-result-title">Revision Cycles Cut</div>
+        <div class="cs-result-desc">Standardised brief templates eliminated the most common cause of revision loops — ambiguity at briefing stage. Average revision rounds dropped significantly.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">↑</div>
+        <div class="cs-result-title">ROAS Across Portfolio</div>
+        <div class="cs-result-desc">Performance-informed creative iteration — retiring fatigued creatives earlier, testing new angles faster — improved paid ROAS across the portfolio.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 LEARNINGS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">06 · Learnings</div>
+    <h2 class="cs-section-title">What enterprise scale teaches you.</h2>
+
+    <div class="cs-learning">
+      <div class="cs-learning-num">L01</div>
+      <div class="cs-learning-text"><strong>Operational clarity is a creative advantage.</strong> When briefs are ambiguous, creatives compensate with their own interpretation. Sometimes that's inspired. At scale, it's a brand consistency risk. Structured briefs don't constrain creativity — they direct it toward the right problem. The best creative teams I've worked with are hungrier for a clear brief than a loose one.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L02</div>
+      <div class="cs-learning-text"><strong>Systemising QA is not a creative compromise — it's a brand protection mechanism.</strong> Manual QA that relies on a senior person's eye doesn't scale. Building a checklist that any team member can run — and that catches brand, legal, and platform issues at the same time — protects the brand without adding senior time to every creative.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L03</div>
+      <div class="cs-learning-text"><strong>Creative fatigue is a data problem, not a creative problem.</strong> Most brands replace underperforming creatives based on gut feel or when performance becomes obviously bad. Building an early-warning system around engagement rate decay and frequency meant we could act weeks before ROAS dropped — keeping the portfolio consistently fresh.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L04</div>
+      <div class="cs-learning-text"><strong>At enterprise scale, saying no to unplanned work is a delivery skill.</strong> The single biggest threat to a multi-brand ops function is ad hoc requests that bypass the process. Building a prioritisation framework gave the team a principled, defensible way to sequence demands — and protected every planned campaign from being disrupted by the loudest voice in the room.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="cs-footer-nav">
+  <a href="lendenclub.html" class="cs-footer-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L7 2M2 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    LenDenClub
+  </a>
+  <div style="text-align: right;">
+    <div class="cs-footer-label">Next case study</div>
+    <a href="saucy-chicks.html" class="cs-footer-next">
+      Saucy Chicks
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="description" content="How I built a fintech SEO engine from zero at LenDenClub — 250+ keywords ranked Top 3, 60% organic growth, 40K+ leads."/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LenDenClub · Case Study · Harsh Naidu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0F1720;
+  --bg2:     #131E2A;
+  --surface: #182430;
+  --border:  #1E2D3D;
+  --teal:    #00A8A8;
+  --text:    #E6F1F2;
+  --text2:   #94A3B8;
+  --text3:   #4A6278;
+  --sans:    'Space Grotesk', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --max:     1100px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(20px,4vw,60px); height: 64px;
+  background: rgba(15,23,32,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-decoration: none; color: var(--text); text-transform: uppercase; }
+.nav-logo .teal { color: var(--teal); }
+.nav-right { display: flex; align-items: center; gap: 28px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text); font-weight: 600; transition: color 0.2s; }
+.nav-links a:hover { color: var(--teal); }
+.nav-status { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--text3); border: 1px solid var(--border); padding: 6px 12px; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 6px var(--teal); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.btn-nav { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: #0F1720; background: var(--teal); padding: 10px 20px; transition: opacity 0.2s; }
+.btn-nav:hover { opacity: 0.85; }
+
+/* ── HERO ── */
+.cs-hero {
+  border-bottom: 1px solid var(--border);
+  padding: 80px clamp(20px,4vw,60px) 64px;
+  position: relative; overflow: hidden;
+}
+.cs-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,168,168,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cs-hero-inner { max-width: var(--max); margin: 0 auto; }
+.cs-breadcrumb {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 32px;
+}
+.cs-breadcrumb a { color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.cs-breadcrumb a:hover { color: var(--teal); }
+.cs-breadcrumb span { color: var(--border); }
+
+.cs-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--teal); border: 1px solid rgba(0,168,168,0.3);
+  padding: 5px 12px; margin-bottom: 20px;
+}
+.cs-title {
+  font-family: var(--sans); font-size: clamp(40px,6vw,80px); font-weight: 700;
+  letter-spacing: -0.04em; line-height: 0.95; color: var(--text);
+  margin-bottom: 28px;
+}
+.cs-title span { color: var(--teal); }
+.cs-lead {
+  font-family: var(--sans); font-size: clamp(16px,2vw,20px); color: var(--text2);
+  max-width: 640px; line-height: 1.6; margin-bottom: 48px; font-weight: 400;
+}
+
+/* STATS ROW */
+.cs-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border); max-width: 800px;
+}
+.cs-stat {
+  background: var(--bg2); padding: 24px 28px;
+}
+.cs-stat-num {
+  font-family: var(--sans); font-size: clamp(28px,3.5vw,40px); font-weight: 700;
+  color: var(--teal); letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px;
+}
+.cs-stat-label {
+  font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em;
+  text-transform: uppercase; line-height: 1.5;
+}
+
+/* META ROW */
+.cs-meta-row {
+  display: flex; gap: 40px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.cs-meta-item { display: flex; flex-direction: column; gap: 5px; }
+.cs-meta-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); }
+.cs-meta-value { font-family: var(--mono); font-size: 12px; color: var(--text2); letter-spacing: 0.05em; }
+
+/* ── BODY LAYOUT ── */
+.cs-body { max-width: var(--max); margin: 0 auto; padding: 0 clamp(20px,4vw,60px) 80px; }
+
+/* SECTION */
+.cs-section {
+  padding: 64px 0; border-bottom: 1px solid var(--border);
+}
+.cs-section:last-child { border-bottom: none; }
+.cs-section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+}
+.cs-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 60px; }
+.cs-section-title {
+  font-family: var(--sans); font-size: clamp(24px,3vw,36px); font-weight: 700;
+  letter-spacing: -0.025em; color: var(--text); margin-bottom: 24px; line-height: 1.1;
+}
+.cs-body-text {
+  font-family: var(--sans); font-size: 16px; color: var(--text2); line-height: 1.75;
+  max-width: 680px;
+}
+.cs-body-text p { margin-bottom: 16px; }
+.cs-body-text p:last-child { margin-bottom: 0; }
+.cs-body-text strong { color: var(--text); font-weight: 600; }
+
+/* TWO-COL */
+.cs-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.cs-two-col.wide-left { grid-template-columns: 3fr 2fr; }
+@media (max-width: 720px) { .cs-two-col, .cs-two-col.wide-left { grid-template-columns: 1fr; } }
+
+/* CALLOUT BLOCK */
+.cs-callout {
+  background: rgba(0,168,168,0.05); border-left: 3px solid var(--teal);
+  padding: 24px 28px; margin: 32px 0;
+}
+.cs-callout p { font-family: var(--mono); font-size: 13px; color: var(--text2); line-height: 1.7; letter-spacing: 0.02em; }
+.cs-callout strong { color: var(--teal); }
+
+/* CHECKLIST */
+.cs-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.cs-list li {
+  display: flex; gap: 14px; align-items: flex-start;
+  font-family: var(--sans); font-size: 15px; color: var(--text2); line-height: 1.5;
+}
+.cs-list li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  flex-shrink: 0; margin-top: 8px;
+}
+
+/* PHASE STEPS */
+.cs-phases { display: flex; flex-direction: column; gap: 0; }
+.cs-phase {
+  display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+  padding: 28px 0; border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.cs-phase:last-child { border-bottom: none; }
+.cs-phase-num {
+  font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.15em;
+  text-transform: uppercase; padding-top: 3px;
+}
+.cs-phase-body {}
+.cs-phase-title { font-family: var(--sans); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em; }
+.cs-phase-desc { font-family: var(--sans); font-size: 14px; color: var(--text2); line-height: 1.65; }
+.cs-phase-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.cs-phase-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); border: 1px solid var(--border); padding: 4px 10px; }
+
+/* RESULT CARDS */
+.cs-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 40px; }
+@media (max-width: 600px) { .cs-results { grid-template-columns: 1fr; } }
+.cs-result {
+  background: var(--bg2); padding: 28px 24px;
+}
+.cs-result-num { font-family: var(--sans); font-size: 36px; font-weight: 700; color: var(--teal); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+.cs-result-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.cs-result-desc { font-family: var(--mono); font-size: 11px; color: var(--text3); line-height: 1.6; letter-spacing: 0.02em; }
+
+/* CHART */
+.cs-chart-wrap {
+  background: var(--bg2); border: 1px solid var(--border); padding: 28px;
+  margin: 32px 0;
+}
+.cs-chart-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 20px; }
+
+/* LEARNINGS */
+.cs-learning {
+  display: grid; grid-template-columns: 40px 1fr; gap: 20px; align-items: start;
+  padding: 24px 0; border-bottom: 1px solid var(--border);
+}
+.cs-learning:last-child { border-bottom: none; }
+.cs-learning-num { font-family: var(--mono); font-size: 11px; color: var(--teal); letter-spacing: 0.1em; padding-top: 2px; }
+.cs-learning-text { font-family: var(--sans); font-size: 15px; color: var(--text2); line-height: 1.65; }
+.cs-learning-text strong { color: var(--text); font-weight: 600; }
+
+/* IMAGE PLACEHOLDER */
+.cs-img-placeholder {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: var(--text3); min-height: 280px; position: relative;
+}
+.cs-img-placeholder .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+.cs-img-placeholder .sublabel { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--border); }
+.cs-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
+
+/* NAV FOOTER */
+.cs-footer-nav {
+  border-top: 1px solid var(--border); padding: 40px clamp(20px,4vw,60px);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+}
+.cs-footer-back { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text3); transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+.cs-footer-back:hover { color: var(--teal); }
+.cs-footer-next { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text2); transition: color 0.2s; display: flex; align-items: center; gap: 8px; }
+.cs-footer-next:hover { color: var(--teal); }
+.cs-footer-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--text3); margin-bottom: 4px; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="harsh_naidu_portfolio_v3.html"><span class="teal">//</span> HARSH NAIDU</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <a href="harsh_naidu_portfolio_v3.html#thinking">Thinking</a>
+      <a href="system.html">System</a>
+      <a href="harsh_naidu_portfolio_v3.html#about">About</a>
+      <a href="harsh_naidu_portfolio_v3.html#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span class="status-dot"></span>Toronto · Open to opportunities</div>
+    <a href="harsh_naidu_portfolio_v3.html#contact" class="btn-nav">Let's talk →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-hero-inner">
+    <div class="cs-breadcrumb">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <span>/</span>
+      <span style="color:var(--text2)">Case 01 of 04</span>
+      <span>/</span>
+      <span style="color:var(--text)">LenDenClub</span>
+    </div>
+
+    <div class="cs-tag">Fintech · SEO · Growth Systems</div>
+    <h1 class="cs-title">Building a<br><span>fintech SEO engine</span><br>from zero.</h1>
+    <p class="cs-lead">LenDenClub had the product. They didn't have the search presence to match it. I built the acquisition infrastructure — keyword architecture, content systems, landing pages, paid amplification — and turned organic search into a compounding growth moat.</p>
+
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-num">250+</div>
+        <div class="cs-stat-label">Keywords<br>Top 3 positions</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">60%</div>
+        <div class="cs-stat-label">Organic traffic<br>growth YoY</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">40K+</div>
+        <div class="cs-stat-label">Qualified leads<br>generated</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">5×</div>
+        <div class="cs-stat-label">ROAS on<br>paid campaigns</div>
+      </div>
+    </div>
+
+    <div class="cs-meta-row">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Company</span>
+        <span class="cs-meta-value">LenDenClub</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Industry</span>
+        <span class="cs-meta-value">Fintech · P2P Lending</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Role</span>
+        <span class="cs-meta-value">Growth Marketer</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Duration</span>
+        <span class="cs-meta-value">12 months</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Channels</span>
+        <span class="cs-meta-value">SEO · Paid · Email · Content</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="cs-body">
+
+  <!-- 01 CONTEXT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">01 · Context</div>
+    <div class="cs-two-col wide-left">
+      <div>
+        <h2 class="cs-section-title">A fintech brand with no search presence.</h2>
+        <div class="cs-body-text">
+          <p>LenDenClub is one of India's leading peer-to-peer lending platforms — connecting individual borrowers with retail investors at scale. The product was solid. The regulatory standing was strong. But the organic search presence was almost nonexistent.</p>
+          <p>Competitors were ranking for the keywords that mattered most — "personal loan online," "P2P investment India," "short-term loan instant approval" — while LenDenClub was invisible at the moment of intent. This wasn't a brand awareness problem. It was an <strong>acquisition infrastructure problem.</strong></p>
+          <p>The opportunity was clear: fintech search queries carry some of the highest commercial intent of any vertical. Own the right keywords at the right moment, and you own the pipeline.</p>
+        </div>
+      </div>
+      <div>
+        <div class="cs-callout">
+          <p><strong>The core insight:</strong> SEO in fintech isn't about publishing more content. It's about mapping the exact language a borrower or investor uses at every stage of their decision, then building architectured landing pages that match that intent precisely.</p>
+        </div>
+        <div style="margin-top: 20px; padding: 20px; background: var(--surface); border: 1px solid var(--border);">
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px;">Market context</div>
+          <ul class="cs-list">
+            <li>High-intent search volume for P2P lending growing 40%+ YoY</li>
+            <li>Competitors ranked on 500+ keywords LenDenClub wasn't targeting</li>
+            <li>RBI-regulated fintech = trust signals critical in content</li>
+            <li>Dual audience: borrowers and investors, each with distinct intent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 PROBLEM -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">02 · Problem</div>
+    <h2 class="cs-section-title">Three compounding problems.</h2>
+    <div class="cs-two-col">
+      <div class="cs-body-text">
+        <p>When I mapped the existing state, three distinct failure points emerged — each amplifying the others.</p>
+        <p><strong>No keyword architecture.</strong> The site had content, but it was unfocused. Pages competed with each other. No clear topical authority had been established in any cluster. Google had no clear signal about what LenDenClub wanted to rank for.</p>
+        <p><strong>No intent-matched landing pages.</strong> Traffic that did arrive hit generic pages. The conversion funnel was broken at the landing layer — high bounce rates, low time-on-page, and almost no form completion from organic visitors.</p>
+        <p><strong>No paid-organic feedback loop.</strong> Paid and organic were running as siloed channels. Paid data wasn't informing which organic pages to build. Organic learnings weren't feeding paid targeting. The two channels were spending independently without compounding.</p>
+      </div>
+      <div>
+        <div style="background: var(--surface); border: 1px solid var(--border); padding: 28px;">
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 20px;">Diagnosis snapshot</div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-family: var(--mono); font-size: 11px; color: var(--text2);">Keyword coverage</span>
+                <span style="font-family: var(--mono); font-size: 11px; color: #ef4444;">Critical</span>
+              </div>
+              <div style="background: var(--border); height: 4px;"><div style="width: 8%; height: 100%; background: #ef4444;"></div></div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-family: var(--mono); font-size: 11px; color: var(--text2);">Landing page conversion</span>
+                <span style="font-family: var(--mono); font-size: 11px; color: #ef4444;">Critical</span>
+              </div>
+              <div style="background: var(--border); height: 4px;"><div style="width: 12%; height: 100%; background: #ef4444;"></div></div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-family: var(--mono); font-size: 11px; color: var(--text2);">Channel integration</span>
+                <span style="font-family: var(--mono); font-size: 11px; color: #f59e0b;">Weak</span>
+              </div>
+              <div style="background: var(--border); height: 4px;"><div style="width: 20%; height: 100%; background: #f59e0b;"></div></div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-family: var(--mono); font-size: 11px; color: var(--text2);">Organic authority</span>
+                <span style="font-family: var(--mono); font-size: 11px; color: #f59e0b;">Low</span>
+              </div>
+              <div style="background: var(--border); height: 4px;"><div style="width: 15%; height: 100%; background: #f59e0b;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 STRATEGY -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">03 · Strategy</div>
+    <h2 class="cs-section-title">Architecture first. Content second.</h2>
+    <div class="cs-body-text" style="margin-bottom: 40px;">
+      <p>The strategic frame was simple: treat SEO as infrastructure, not content production. Before writing a single article, I mapped the full keyword universe into intent clusters, identified the highest-value gaps, and designed a content architecture that would establish topical authority across both the borrower and investor journeys.</p>
+    </div>
+
+    <div class="cs-phases">
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 01</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Keyword architecture and intent mapping</div>
+          <div class="cs-phase-desc">Built a full keyword universe across both the borrower journey (personal loan, instant credit, P2P borrow) and investor journey (P2P investment, high returns, alternative assets). Clustered by intent stage — informational, navigational, transactional. Mapped competitors' ranking positions to identify gap clusters with high volume and low difficulty.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Keyword Research</span>
+            <span class="cs-phase-tag">Intent Clustering</span>
+            <span class="cs-phase-tag">Competitor Gap Analysis</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 02</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Content system and topical authority build</div>
+          <div class="cs-phase-desc">Designed a hub-and-spoke content model. Pillar pages targeting primary intent clusters, supported by satellite articles targeting long-tail variations. Each piece was written with conversion in mind — trust signals, regulatory credentials, and clear CTAs baked into every template. Established editorial standards and a production cadence that could scale.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Content Architecture</span>
+            <span class="cs-phase-tag">Hub-and-Spoke Model</span>
+            <span class="cs-phase-tag">Conversion-First Writing</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 03</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Intent-matched landing page system</div>
+          <div class="cs-phase-desc">Built a library of landing pages matched to specific keyword intents — not generic product pages, but pages designed around the exact query a user typed. Each page had a dedicated value proposition, social proof set, and CTA calibrated to the intent stage. Borrower and investor pages were built as entirely separate conversion flows.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Landing Page Design</span>
+            <span class="cs-phase-tag">CRO</span>
+            <span class="cs-phase-tag">A/B Testing</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Phase 04</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Paid amplification and feedback loop</div>
+          <div class="cs-phase-desc">Used paid search and Meta to amplify the highest-performing organic pages and to test new keyword clusters before committing organic resource. Paid campaigns retargeted organic visitors who hadn't converted, and paid data directly informed which new organic content to build next. The two channels ran as a unified system, not separate budgets.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Google Ads</span>
+            <span class="cs-phase-tag">Meta Ads</span>
+            <span class="cs-phase-tag">Retargeting</span>
+            <span class="cs-phase-tag">Cross-channel Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 EXECUTION -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">04 · Execution</div>
+    <h2 class="cs-section-title">The acquisition loop in practice.</h2>
+    <div class="cs-body-text" style="margin-bottom: 40px;">
+      <p>Execution was built around a single principle: every channel feeds the next. SEO drives intent-qualified traffic. Landing pages capture it. Paid retargets what didn't convert. Email nurtures what's in pipeline. Each loop makes the next iteration smarter.</p>
+    </div>
+
+    <!-- Acquisition loop diagram — reused from homepage -->
+    <div style="background: var(--bg2); border: 1px solid var(--border); padding: clamp(20px,3vw,36px); margin-bottom: 40px; overflow-x: auto;">
+      <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 20px;">The acquisition loop</div>
+      <svg viewBox="0 0 1060 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; min-width:600px; height:auto;">
+        <!-- Step numbers -->
+        <text x="83" y="20" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" letter-spacing="2">01</text>
+        <text x="258" y="20" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle" letter-spacing="2">02</text>
+        <text x="435" y="20" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle" letter-spacing="2">03</text>
+        <text x="610" y="20" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle" letter-spacing="2">04</text>
+        <text x="788" y="20" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle" letter-spacing="2">05</text>
+        <text x="978" y="20" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" letter-spacing="2">06</text>
+        <!-- Node 1 -->
+        <rect x="8" y="30" width="150" height="100" fill="#0D1B26" stroke="#00A8A8" stroke-width="2"/>
+        <rect x="8" y="30" width="150" height="26" fill="#00A8A8"/>
+        <text x="83" y="48" font-family="monospace" font-size="10" fill="#0F1720" text-anchor="middle" font-weight="bold" letter-spacing="1">SEO CONTENT</text>
+        <text x="83" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">STRATEGY</text>
+        <text x="83" y="95" font-family="monospace" font-size="10" fill="#94A3B8" text-anchor="middle">High-intent traffic</text>
+        <text x="83" y="113" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" font-weight="bold">250+ keywords</text>
+        <!-- Arrow -->
+        <line x1="158" y1="80" x2="180" y2="80" stroke="#E6F1F2" stroke-width="2"/>
+        <polygon points="175,74 186,80 175,86" fill="#E6F1F2"/>
+        <!-- Node 2 -->
+        <rect x="186" y="30" width="144" height="100" fill="#182430" stroke="#2C3E50" stroke-width="1.5"/>
+        <rect x="186" y="30" width="144" height="26" fill="#2C3E50"/>
+        <text x="258" y="48" font-family="monospace" font-size="10" fill="#E6F1F2" text-anchor="middle" font-weight="bold" letter-spacing="1">LANDING PAGES</text>
+        <text x="258" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">INTENT-</text>
+        <text x="258" y="89" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">MATCHED</text>
+        <text x="258" y="113" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle">CX built to convert</text>
+        <!-- Arrow -->
+        <line x1="330" y1="80" x2="352" y2="80" stroke="#E6F1F2" stroke-width="2"/>
+        <polygon points="347,74 358,80 347,86" fill="#E6F1F2"/>
+        <!-- Node 3 -->
+        <rect x="358" y="30" width="154" height="100" fill="#182430" stroke="#2C3E50" stroke-width="1.5"/>
+        <rect x="358" y="30" width="154" height="26" fill="#2C3E50"/>
+        <text x="435" y="48" font-family="monospace" font-size="10" fill="#E6F1F2" text-anchor="middle" font-weight="bold" letter-spacing="1">LEAD CAPTURE</text>
+        <text x="435" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">FORMS +</text>
+        <text x="435" y="89" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">SIGNALS</text>
+        <text x="435" y="113" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" font-weight="bold">40K+ leads</text>
+        <!-- Arrow -->
+        <line x1="512" y1="80" x2="534" y2="80" stroke="#E6F1F2" stroke-width="2"/>
+        <polygon points="529,74 540,80 529,86" fill="#E6F1F2"/>
+        <!-- Node 4 -->
+        <rect x="540" y="30" width="140" height="100" fill="#182430" stroke="#2C3E50" stroke-width="1.5"/>
+        <rect x="540" y="30" width="140" height="26" fill="#2C3E50"/>
+        <text x="610" y="48" font-family="monospace" font-size="10" fill="#E6F1F2" text-anchor="middle" font-weight="bold" letter-spacing="1">RETARGETING</text>
+        <text x="610" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">PAID +</text>
+        <text x="610" y="89" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">META ADS</text>
+        <text x="610" y="113" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" font-weight="bold">5× ROAS</text>
+        <!-- Arrow -->
+        <line x1="680" y1="80" x2="702" y2="80" stroke="#E6F1F2" stroke-width="2"/>
+        <polygon points="697,74 708,80 697,86" fill="#E6F1F2"/>
+        <!-- Node 5 -->
+        <rect x="708" y="30" width="160" height="100" fill="#182430" stroke="#2C3E50" stroke-width="1.5"/>
+        <rect x="708" y="30" width="160" height="26" fill="#2C3E50"/>
+        <text x="788" y="48" font-family="monospace" font-size="10" fill="#E6F1F2" text-anchor="middle" font-weight="bold" letter-spacing="1">EMAIL NURTURE</text>
+        <text x="788" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">SEQUENCES</text>
+        <text x="788" y="95" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle">Segmented flows</text>
+        <text x="788" y="113" font-family="monospace" font-size="10" fill="#64748B" text-anchor="middle">pushing to close</text>
+        <!-- Arrow -->
+        <line x1="868" y1="80" x2="890" y2="80" stroke="#00A8A8" stroke-width="2"/>
+        <polygon points="885,74 896,80 885,86" fill="#00A8A8"/>
+        <!-- Node 6 -->
+        <rect x="896" y="30" width="156" height="100" fill="#0D1B26" stroke="#00A8A8" stroke-width="2"/>
+        <rect x="896" y="30" width="156" height="26" fill="#00A8A8"/>
+        <text x="974" y="48" font-family="monospace" font-size="10" fill="#0F1720" text-anchor="middle" font-weight="bold" letter-spacing="1">CONVERSION</text>
+        <text x="974" y="73" font-family="monospace" font-size="12" fill="#E6F1F2" text-anchor="middle" font-weight="bold">+ DATA LOOP</text>
+        <text x="974" y="95" font-family="monospace" font-size="10" fill="#94A3B8" text-anchor="middle">Signals feed back</text>
+        <text x="974" y="113" font-family="monospace" font-size="10" fill="#00A8A8" text-anchor="middle" font-weight="bold">loop restarts</text>
+        <!-- Loopback -->
+        <path d="M974 130 Q974 200 530 200 Q86 200 83 148" stroke="#00A8A8" stroke-width="1.5" stroke-dasharray="7,5" fill="none" opacity="0.6"/>
+        <polygon points="77,144 83,156 89,144" fill="#00A8A8" opacity="0.6"/>
+        <text x="530" y="220" font-family="monospace" font-size="10" fill="rgba(0,168,168,0.5)" text-anchor="middle" letter-spacing="2">COMPOUNDING ACQUISITION LOOP</text>
+      </svg>
+    </div>
+
+    <div class="cs-two-col">
+      <div class="cs-body-text">
+        <p><strong>SEO layer:</strong> Over 12 months, the content system produced 250+ pages ranking in the top 3 positions for high-intent fintech queries. The architecture was built so that new pages benefited from the domain authority of existing clusters — each piece of content compounded the previous.</p>
+        <p><strong>Paid layer:</strong> Google Search ads ran on the same intent clusters as organic, capturing demand that SEO hadn't yet ranked for. Meta campaigns retargeted organic visitors and lookalike audiences based on the highest-converting lead profiles. Paid budget was reallocated weekly based on organic performance data.</p>
+      </div>
+      <div class="cs-body-text">
+        <p><strong>Email layer:</strong> A segmented nurture sequence handled the gap between lead capture and conversion — separate tracks for borrowers and investors, with different objection handling and trust signal sequencing. Open rates averaged 38%+, driving consistent pipeline contribution.</p>
+        <p><strong>The data loop:</strong> Every channel reported into a unified dashboard. Paid CTR data informed which organic titles to test. Organic keyword data informed which paid ad copy to write. Conversion data from landing pages fed back into content briefs. Nothing ran in isolation.</p>
+      </div>
+    </div>
+
+    <!-- Image grid placeholder -->
+    <div class="cs-img-grid" style="margin-top: 40px;">
+      <div class="cs-img-placeholder">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="label">Campaign Screenshot</span>
+        <span class="sublabel">Add LenDenClub dashboard or ad creative</span>
+      </div>
+      <div class="cs-img-placeholder">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="label">Analytics Dashboard</span>
+        <span class="sublabel">Add organic traffic growth screenshot</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 RESULTS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">05 · Results</div>
+    <h2 class="cs-section-title">Numbers that compounded.</h2>
+    <div class="cs-body-text" style="margin-bottom: 16px;">
+      <p>The system reached full compounding velocity by month 8. By month 12, organic had become the single largest acquisition channel — and the most cost-efficient by a significant margin.</p>
+    </div>
+
+    <div class="cs-results">
+      <div class="cs-result">
+        <div class="cs-result-num">250+</div>
+        <div class="cs-result-title">Keywords in Top 3</div>
+        <div class="cs-result-desc">From near zero. Target queries across both borrower and investor journeys, across commercial and informational intent.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">60%</div>
+        <div class="cs-result-title">Organic Traffic Growth</div>
+        <div class="cs-result-desc">Year-on-year increase in qualified organic sessions. Growth accelerated in H2 as topical authority compounded across clusters.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">40K+</div>
+        <div class="cs-result-title">Qualified Leads</div>
+        <div class="cs-result-desc">Leads captured across organic and paid channels, fed into segmented nurture pipelines. Dual-audience: borrowers and investors.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">5×</div>
+        <div class="cs-result-title">ROAS on Paid</div>
+        <div class="cs-result-desc">Return on ad spend across Google and Meta. Paid performance improved as organic data informed better audience and copy decisions.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">38%+</div>
+        <div class="cs-result-title">Email Open Rate</div>
+        <div class="cs-result-desc">Across the segmented nurture sequences, well above fintech industry average. Drove consistent pipeline contribution at near-zero marginal cost.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">#1</div>
+        <div class="cs-result-title">Acquisition Channel</div>
+        <div class="cs-result-desc">Organic search became the single largest and most cost-efficient acquisition channel by month 12. The moat was real.</div>
+      </div>
+    </div>
+
+    <!-- Growth chart -->
+    <div class="cs-chart-wrap" style="margin-top: 40px;">
+      <div class="cs-chart-label">Organic traffic growth · 12-month trajectory</div>
+      <svg viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00A8A8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#00A8A8" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- Grid lines -->
+        <line x1="60" y1="20" x2="780" y2="20" stroke="var(--border)" stroke-width="1"/>
+        <line x1="60" y1="60" x2="780" y2="60" stroke="var(--border)" stroke-width="1"/>
+        <line x1="60" y1="100" x2="780" y2="100" stroke="var(--border)" stroke-width="1"/>
+        <line x1="60" y1="140" x2="780" y2="140" stroke="var(--border)" stroke-width="1"/>
+        <line x1="60" y1="170" x2="780" y2="170" stroke="var(--border)" stroke-width="1.5"/>
+        <!-- Y labels -->
+        <text x="50" y="24" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="end">+60%</text>
+        <text x="50" y="64" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="end">+45%</text>
+        <text x="50" y="104" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="end">+30%</text>
+        <text x="50" y="144" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="end">+15%</text>
+        <text x="50" y="174" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="end">0%</text>
+        <!-- Area -->
+        <polygon points="60,170 120,168 180,164 240,158 300,148 360,134 420,118 480,100 540,80 600,60 660,40 720,28 780,20 780,170" fill="url(#chartGrad)"/>
+        <!-- Line -->
+        <polyline points="60,170 120,168 180,164 240,158 300,148 360,134 420,118 480,100 540,80 600,60 660,40 720,28 780,20" stroke="#00A8A8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Dots -->
+        <circle cx="60" cy="170" r="3.5" fill="#00A8A8" opacity="0.5"/>
+        <circle cx="300" cy="148" r="4" fill="#00A8A8" opacity="0.7"/>
+        <circle cx="540" cy="80" r="4" fill="#00A8A8" opacity="0.85"/>
+        <circle cx="780" cy="20" r="6" fill="#00A8A8"/>
+        <!-- End callout -->
+        <rect x="692" y="4" width="80" height="20" fill="#00A8A8"/>
+        <text x="732" y="17" font-family="monospace" font-size="9" fill="#0F1720" text-anchor="middle" font-weight="bold">+60% YoY</text>
+        <!-- X labels -->
+        <text x="60" y="186" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="middle">M1</text>
+        <text x="180" y="186" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="middle">M3</text>
+        <text x="360" y="186" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="middle">M6</text>
+        <text x="540" y="186" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="middle">M9</text>
+        <text x="780" y="186" font-family="monospace" font-size="9" fill="#4A6278" text-anchor="middle">M12</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 06 LEARNINGS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">06 · Learnings</div>
+    <h2 class="cs-section-title">What this reinforced.</h2>
+
+    <div class="cs-learning">
+      <div class="cs-learning-num">L01</div>
+      <div class="cs-learning-text"><strong>SEO is architecture, not content volume.</strong> The brands that win in search don't publish more — they build more intentionally. Topical authority is earned through structured coverage of an intent universe, not random article production. Every page needs a reason to exist in the architecture.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L02</div>
+      <div class="cs-learning-text"><strong>Paid and organic are most powerful when they're talking to each other.</strong> The moment I unified the data view across both channels, performance improved on both sides. Paid found better audiences. Organic found better angles. The silos were costing money on both sides.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L03</div>
+      <div class="cs-learning-text"><strong>In regulated verticals, trust is a conversion variable.</strong> Fintech content that doesn't explicitly address regulatory standing, security, and risk performs significantly worse than content that does. Compliance signals aren't just legal requirements — they're persuasion tools. Writing them that way changes everything.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L04</div>
+      <div class="cs-learning-text"><strong>Compound returns take time but are worth waiting for.</strong> The system didn't reach full velocity until month 8. Months 1-4 were mostly invisible. Any stakeholder expecting quick organic wins would have pulled the budget too early. The job of the strategist is partly to protect the long game from short-term pressure.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="cs-footer-nav">
+  <a href="harsh_naidu_portfolio_v3.html#work" class="cs-footer-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L7 2M2 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    All case studies
+  </a>
+  <div style="text-align: right;">
+    <div class="cs-footer-label">Next case study</div>
+    <a href="tata-digital.html" class="cs-footer-next">
+      Tata Digital
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

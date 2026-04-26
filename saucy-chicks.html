@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="description" content="How I built the Saucy Chicks food brand from scratch — 200K+ content views in 60 days across 3 delivery platforms."/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Saucy Chicks · Case Study · Harsh Naidu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0F1720;
+  --bg2:     #131E2A;
+  --surface: #182430;
+  --border:  #1E2D3D;
+  --teal:    #00A8A8;
+  --text:    #E6F1F2;
+  --text2:   #94A3B8;
+  --text3:   #4A6278;
+  --sans:    'Space Grotesk', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --max:     1100px;
+  /* Saucy Chicks brand accent */
+  --sc-orange: #E8501A;
+  --sc-warm:   rgba(232,80,26,0.08);
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+/* NAV */
+nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(20px,4vw,60px); height:64px; background:rgba(15,23,32,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:var(--mono); font-size:13px; font-weight:700; letter-spacing:0.1em; text-decoration:none; color:var(--text); text-transform:uppercase; }
+.nav-logo .teal { color:var(--teal); }
+.nav-right { display:flex; align-items:center; gap:28px; }
+.nav-links { display:flex; gap:32px; }
+.nav-links a { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--text); font-weight:600; transition:color 0.2s; }
+.nav-links a:hover { color:var(--teal); }
+.nav-status { display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:10px; letter-spacing:0.08em; color:var(--text3); border:1px solid var(--border); padding:6px 12px; }
+.status-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 6px var(--teal); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.btn-nav { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:#0F1720; background:var(--teal); padding:10px 20px; transition:opacity 0.2s; }
+.btn-nav:hover { opacity:0.85; }
+
+/* HERO — warmer tone than other cases */
+.cs-hero { border-bottom:1px solid var(--border); padding:80px clamp(20px,4vw,60px) 64px; position:relative; overflow:hidden; }
+.cs-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 60% at 90% 30%, rgba(232,80,26,0.06) 0%, transparent 65%), radial-gradient(ellipse 30% 40% at 10% 80%, rgba(0,168,168,0.05) 0%, transparent 60%); pointer-events:none; }
+.cs-hero-inner { max-width:var(--max); margin:0 auto; position:relative; }
+
+.cs-breadcrumb { display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text3); margin-bottom:32px; }
+.cs-breadcrumb a { color:var(--text3); text-decoration:none; transition:color 0.2s; }
+.cs-breadcrumb a:hover { color:var(--teal); }
+.cs-breadcrumb span { color:var(--border); }
+
+.cs-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--sc-orange); border:1px solid rgba(232,80,26,0.3); padding:5px 12px; margin-bottom:20px; }
+.cs-title { font-family:var(--sans); font-size:clamp(40px,6vw,80px); font-weight:700; letter-spacing:-0.04em; line-height:0.95; margin-bottom:28px; }
+.cs-title .orange { color:var(--sc-orange); }
+.cs-title .teal { color:var(--teal); }
+.cs-lead { font-family:var(--sans); font-size:clamp(16px,2vw,20px); color:var(--text2); max-width:640px; line-height:1.6; margin-bottom:48px; }
+
+/* STATS */
+.cs-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); max-width:800px; }
+.cs-stat { background:var(--bg2); padding:24px 28px; }
+.cs-stat-num { font-family:var(--sans); font-size:clamp(28px,3.5vw,40px); font-weight:700; letter-spacing:-0.03em; line-height:1; margin-bottom:6px; }
+.cs-stat-num.orange { color:var(--sc-orange); }
+.cs-stat-num.teal { color:var(--teal); }
+.cs-stat-label { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; line-height:1.5; }
+
+/* META */
+.cs-meta-row { display:flex; gap:40px; flex-wrap:wrap; margin-top:48px; padding-top:32px; border-top:1px solid var(--border); }
+.cs-meta-item { display:flex; flex-direction:column; gap:5px; }
+.cs-meta-label { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text3); }
+.cs-meta-value { font-family:var(--mono); font-size:12px; color:var(--text2); letter-spacing:0.05em; }
+
+/* BODY */
+.cs-body { max-width:var(--max); margin:0 auto; padding:0 clamp(20px,4vw,60px) 80px; }
+.cs-section { padding:64px 0; border-bottom:1px solid var(--border); }
+.cs-section:last-child { border-bottom:none; }
+.cs-section-label { font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.cs-section-label::after { content:''; flex:1; height:1px; background:var(--border); max-width:60px; }
+.cs-section-title { font-family:var(--sans); font-size:clamp(24px,3vw,36px); font-weight:700; letter-spacing:-0.025em; color:var(--text); margin-bottom:24px; line-height:1.1; }
+.cs-body-text { font-family:var(--sans); font-size:16px; color:var(--text2); line-height:1.75; max-width:680px; }
+.cs-body-text p { margin-bottom:16px; }
+.cs-body-text p:last-child { margin-bottom:0; }
+.cs-body-text strong { color:var(--text); font-weight:600; }
+
+/* TWO COL */
+.cs-two-col { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.cs-two-col.wide-left { grid-template-columns:3fr 2fr; }
+@media (max-width:720px) { .cs-two-col, .cs-two-col.wide-left { grid-template-columns:1fr; } }
+
+/* CALLOUT */
+.cs-callout { background:rgba(232,80,26,0.05); border-left:3px solid var(--sc-orange); padding:24px 28px; margin:32px 0; }
+.cs-callout p { font-family:var(--mono); font-size:13px; color:var(--text2); line-height:1.7; letter-spacing:0.02em; }
+.cs-callout strong { color:var(--sc-orange); }
+.cs-callout.teal { background:rgba(0,168,168,0.05); border-left-color:var(--teal); }
+.cs-callout.teal strong { color:var(--teal); }
+
+/* LIST */
+.cs-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+.cs-list li { display:flex; gap:14px; align-items:flex-start; font-family:var(--sans); font-size:15px; color:var(--text2); line-height:1.5; }
+.cs-list li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--sc-orange); flex-shrink:0; margin-top:8px; }
+
+/* PHASES */
+.cs-phases { display:flex; flex-direction:column; }
+.cs-phase { display:grid; grid-template-columns:80px 1fr; gap:24px; padding:28px 0; border-bottom:1px solid var(--border); align-items:start; }
+.cs-phase:last-child { border-bottom:none; }
+.cs-phase-num { font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:0.15em; text-transform:uppercase; padding-top:3px; }
+.cs-phase-title { font-family:var(--sans); font-size:18px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.cs-phase-desc { font-family:var(--sans); font-size:14px; color:var(--text2); line-height:1.65; }
+.cs-phase-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.cs-phase-tag { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); border:1px solid var(--border); padding:4px 10px; }
+
+/* PLATFORM STRIP */
+.platform-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin:32px 0; }
+.platform-card { background:var(--bg2); padding:24px 20px; display:flex; flex-direction:column; gap:8px; }
+.platform-name { font-family:var(--sans); font-size:16px; font-weight:700; color:var(--text); }
+.platform-role { font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); }
+.platform-detail { font-family:var(--mono); font-size:11px; color:var(--text2); line-height:1.5; margin-top:4px; }
+
+/* CREATIVE SYSTEM VISUAL */
+.creative-system { border:1px solid var(--border); background:var(--bg2); padding:28px; margin:32px 0; }
+.cs-sys-label { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text3); margin-bottom:20px; }
+.cs-sys-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); }
+@media (max-width:560px) { .cs-sys-grid { grid-template-columns:repeat(2,1fr); } }
+.cs-sys-cell { background:var(--surface); padding:20px 16px; }
+.cs-sys-cell-title { font-family:var(--sans); font-size:14px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.cs-sys-cell-items { display:flex; flex-direction:column; gap:5px; }
+.cs-sys-cell-item { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.03em; display:flex; gap:8px; align-items:flex-start; }
+.cs-sys-cell-item::before { content:'·'; color:var(--sc-orange); flex-shrink:0; font-weight:700; }
+
+/* IMAGE LAYOUTS */
+.img-hero-full { width:100%; aspect-ratio:16/7; background:var(--surface); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--text3); position:relative; overflow:hidden; }
+.img-hero-full img { width:100%; height:100%; object-fit:cover; }
+.img-hero-full .placeholder-label { font-family:var(--mono); font-size:10px; letter-spacing:0.15em; text-transform:uppercase; }
+.img-hero-full .placeholder-sub { font-family:var(--mono); font-size:9px; color:var(--border); }
+
+.img-3col { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:32px 0; }
+@media (max-width:560px) { .img-3col { grid-template-columns:1fr 1fr; } }
+.img-cell { aspect-ratio:4/3; background:var(--surface); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text3); overflow:hidden; }
+.img-cell img { width:100%; height:100%; object-fit:cover; }
+.img-cell .lbl { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; }
+
+.img-2col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:32px 0; }
+.img-2col .img-cell { aspect-ratio:3/2; }
+
+/* RESULTS */
+.cs-results { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:40px; }
+@media (max-width:600px) { .cs-results { grid-template-columns:1fr; } }
+.cs-result { background:var(--bg2); padding:28px 24px; }
+.cs-result-num { font-family:var(--sans); font-size:36px; font-weight:700; letter-spacing:-0.03em; line-height:1; margin-bottom:8px; }
+.cs-result-num.orange { color:var(--sc-orange); }
+.cs-result-num.teal { color:var(--teal); }
+.cs-result-title { font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:6px; }
+.cs-result-desc { font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6; }
+
+/* LEARNINGS */
+.cs-learning { display:grid; grid-template-columns:40px 1fr; gap:20px; align-items:start; padding:24px 0; border-bottom:1px solid var(--border); }
+.cs-learning:last-child { border-bottom:none; }
+.cs-learning-num { font-family:var(--mono); font-size:11px; color:var(--sc-orange); letter-spacing:0.1em; padding-top:2px; }
+.cs-learning-text { font-family:var(--sans); font-size:15px; color:var(--text2); line-height:1.65; }
+.cs-learning-text strong { color:var(--text); font-weight:600; }
+
+/* TIMELINE */
+.timeline { display:flex; flex-direction:column; gap:0; position:relative; padding-left:32px; }
+.timeline::before { content:''; position:absolute; left:7px; top:8px; bottom:8px; width:1px; background:var(--border); }
+.tl-item { position:relative; padding:0 0 28px 24px; }
+.tl-item:last-child { padding-bottom:0; }
+.tl-dot { position:absolute; left:-25px; top:4px; width:10px; height:10px; border:2px solid var(--sc-orange); background:var(--bg); border-radius:0; }
+.tl-dot.done { background:var(--sc-orange); }
+.tl-week { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--sc-orange); margin-bottom:5px; }
+.tl-title { font-family:var(--sans); font-size:15px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.tl-desc { font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6; }
+
+/* FOOTER NAV */
+.cs-footer-nav { border-top:1px solid var(--border); padding:40px clamp(20px,4vw,60px); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.cs-footer-back { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--text3); transition:color 0.2s; display:flex; align-items:center; gap:8px; }
+.cs-footer-back:hover { color:var(--teal); }
+.cs-footer-next { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--text2); transition:color 0.2s; display:flex; align-items:center; gap:8px; }
+.cs-footer-next:hover { color:var(--teal); }
+.cs-footer-label { font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--text3); margin-bottom:4px; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="harsh_naidu_portfolio_v3.html"><span class="teal">//</span> HARSH NAIDU</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <a href="harsh_naidu_portfolio_v3.html#thinking">Thinking</a>
+      <a href="system.html">System</a>
+      <a href="harsh_naidu_portfolio_v3.html#about">About</a>
+      <a href="harsh_naidu_portfolio_v3.html#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span class="status-dot"></span>Toronto · Open to opportunities</div>
+    <a href="harsh_naidu_portfolio_v3.html#contact" class="btn-nav">Let's talk →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-hero-inner">
+    <div class="cs-breadcrumb">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <span>/</span>
+      <span style="color:var(--text2)">Case 03 of 04</span>
+      <span>/</span>
+      <span style="color:var(--text)">Saucy Chicks</span>
+    </div>
+
+    <div class="cs-tag">DTC · Brand Launch · Creative + Performance</div>
+    <h1 class="cs-title">Zero to<br><span class="orange">200K views.</span><br><span class="teal">60 days.</span></h1>
+    <p class="cs-lead">Saucy Chicks had no brand, no audience, and no content. I built everything from scratch — brand identity, food photography, creative direction, platform operations across three delivery apps, and a paid media system — in under 60 days.</p>
+
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-num orange">200K+</div>
+        <div class="cs-stat-label">Content views<br>in 60 days</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num teal">3</div>
+        <div class="cs-stat-label">Delivery platforms<br>launched simultaneously</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num orange">0</div>
+        <div class="cs-stat-label">Starting audience.<br>Built from scratch.</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num teal">60</div>
+        <div class="cs-stat-label">Days from nothing<br>to live brand</div>
+      </div>
+    </div>
+
+    <div class="cs-meta-row">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Brand</span>
+        <span class="cs-meta-value">Saucy Chicks Co.</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Category</span>
+        <span class="cs-meta-value">Food &amp; Beverage · DTC · Ghost Kitchen</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Role</span>
+        <span class="cs-meta-value">Brand Builder · Creative Director · Growth Lead</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Platforms</span>
+        <span class="cs-meta-value">Uber Eats · DoorDash · Skip the Dishes</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Timeline</span>
+        <span class="cs-meta-value">60 days · Full build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="cs-body">
+
+  <!-- 01 CONTEXT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">01 · Context</div>
+    <div class="cs-two-col wide-left">
+      <div>
+        <h2 class="cs-section-title">A food brand with no runway, no audience, and no margin for slow.</h2>
+        <div class="cs-body-text">
+          <p>Saucy Chicks is a Canadian ghost kitchen concept — a chicken tender and sandwich brand built for delivery, living entirely across Uber Eats, DoorDash, and Skip the Dishes. No physical storefront. No walk-in traffic. No brand recognition. Just a menu and a mandate to build.</p>
+          <p>In the ghost kitchen model, the brand <em>is</em> the marketing. You don't have a location doing the heavy lifting. Every order comes through digital discovery — either through the platform algorithm, paid media, or organic content. <strong>If nobody knows you exist, nobody orders.</strong></p>
+          <p>The task was as complete as it gets: build the brand identity, shoot the product photography, establish the content presence, get listed and optimised across three platforms, and drive initial order volume — all simultaneously, all within 60 days.</p>
+        </div>
+      </div>
+      <div>
+        <div class="cs-callout">
+          <p><strong>The constraint:</strong> Ghost kitchen brands have no location advantage, no word-of-mouth from foot traffic, and no physical brand expression. Every single touchpoint — platform listing, photo, social post, ad — has to do more work than it would for a brick-and-mortar.</p>
+        </div>
+        <div style="margin-top:20px; padding:20px; background:var(--surface); border:1px solid var(--border);">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text3); margin-bottom:14px;">Starting conditions</div>
+          <ul class="cs-list">
+            <li>No brand assets — logo, colour system, or tone of voice</li>
+            <li>No product photography — every dish needed to be shot</li>
+            <li>No platform presence — zero reviews, zero history</li>
+            <li>No social accounts — starting from absolute zero followers</li>
+            <li>No paid media account or prior audience data to target</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero image — full width brand shot -->
+    <div class="img-hero-full reveal" style="margin-top:48px;">
+      <!-- Replace src with: SaucyChicksCo_ChickenSandwichComboBox.jpg or SaucyChicksCo_SandwichFourTendersAndFriesCombo.jpg -->
+      <svg width="48" height="48" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+      <span class="placeholder-label">Hero brand shot</span>
+      <span class="placeholder-sub">Replace with SaucyChicksCo_ChickenSandwichComboBox.jpg</span>
+    </div>
+  </div>
+
+  <!-- 02 PROBLEM -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">02 · Problem</div>
+    <h2 class="cs-section-title">Everything needed building. Nothing existed yet.</h2>
+    <div class="cs-two-col">
+      <div class="cs-body-text">
+        <p>Most marketing briefs ask you to grow something that already exists. This one asked for something different: <strong>create the foundation and then grow it simultaneously.</strong> The brand had to look credible from day one — which meant the photography, the listing copy, the social feed, and the ad creative all had to be strong at launch, not after iteration.</p>
+        <p>The ghost kitchen category is brutally competitive on delivery platforms. Uber Eats and DoorDash surface restaurants by algorithm — a combination of ratings, completion rate, price, and proximity. For a new brand with zero reviews, breaking into that algorithm requires strong visual differentiation and an early order velocity push to signal relevance.</p>
+        <p>The problem was therefore threefold: build a brand that looked established before it was, drive enough early orders to activate the platform algorithm, and do it across three platforms at once without the content or budget to treat each one differently.</p>
+      </div>
+      <div>
+        <div style="background:var(--surface); border:1px solid var(--border); padding:28px;">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text3); margin-bottom:20px;">The three simultaneous challenges</div>
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div>
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">Brand credibility on day one</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">No brand history to lean on. Photography and visual identity had to communicate quality instantly.</div>
+            </div>
+            <div style="border-top:1px solid var(--border); padding-top:20px;">
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">Platform algorithm activation</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">Zero reviews, zero history. Needed early order velocity to signal to the platforms that Saucy Chicks was worth surfacing.</div>
+            </div>
+            <div style="border-top:1px solid var(--border); padding-top:20px;">
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">Content at scale, lean budget</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">Three platforms, a social presence, and paid media — all with a startup-level content budget and a 60-day window.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 STRATEGY -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">03 · Strategy</div>
+    <h2 class="cs-section-title">Brand-first. Algorithm second. Paid third.</h2>
+    <div class="cs-body-text" style="margin-bottom:40px;">
+      <p>The sequencing mattered. In the ghost kitchen model, paid media without strong brand visuals and platform credibility wastes budget — you drive traffic to a listing that doesn't convert. I committed to building the brand foundation in weeks 1-2 before spending a dollar on paid, so that every channel worked harder from the moment it switched on.</p>
+    </div>
+
+    <div class="cs-two-col" style="margin-bottom:48px;">
+      <div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-week">Weeks 1–2</div>
+            <div class="tl-title">Brand identity and photography</div>
+            <div class="tl-desc">Logo, colour system, brand voice, and full product photography shoot. Every menu item photographed for platform listings and social content.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-week">Week 3</div>
+            <div class="tl-title">Platform setup and listing optimisation</div>
+            <div class="tl-desc">Menu listings built across Uber Eats, DoorDash, and Skip with SEO-informed copy, photography uploaded, pricing strategy set.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-week">Weeks 3–4</div>
+            <div class="tl-title">Social presence and content calendar launch</div>
+            <div class="tl-desc">Instagram and TikTok launched. Initial content batch published. Tone and visual language locked in from day one.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-week">Weeks 4–8</div>
+            <div class="tl-title">Paid media activation and optimisation</div>
+            <div class="tl-desc">Meta campaigns launched targeting local food delivery audience. Platform-native promotions activated to drive early order velocity and first reviews.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-week">Day 60</div>
+            <div class="tl-title">200,000+ content views</div>
+            <div class="tl-desc">Organic and paid combined to hit 200K+ views. Platform listings active and generating orders across all three apps.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="cs-callout teal" style="margin-top:0;">
+          <p><strong>The key sequencing insight:</strong> In a brand-new DTC food business, creative quality is a performance variable, not a nice-to-have. Paid media directed at weak visuals wastes every dollar. We shot first, spent second — and the ROAS on paid reflected that discipline.</p>
+        </div>
+        <div style="margin-top:20px; padding:20px; background:var(--surface); border:1px solid var(--border);">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text3); margin-bottom:14px;">Channel priority order</div>
+          <ul class="cs-list" style="gap:10px;">
+            <li style="font-size:13px;">Brand identity and photography first</li>
+            <li style="font-size:13px;">Platform listings optimised before going live</li>
+            <li style="font-size:13px;">Organic social launched before paid</li>
+            <li style="font-size:13px;">Paid activated only when brand had credibility</li>
+            <li style="font-size:13px;">Platform promotions used to seed first reviews</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform strip -->
+    <div class="platform-strip">
+      <div class="platform-card">
+        <div class="platform-name">Uber Eats</div>
+        <div class="platform-role">Primary platform</div>
+        <div class="platform-detail">Highest order volume. Listing optimised with hero photography, keyword-rich description, and structured menu hierarchy. Platform promotions used for launch velocity.</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-name">DoorDash</div>
+        <div class="platform-role">Secondary platform</div>
+        <div class="platform-detail">Strong in specific neighbourhoods. Separate photography optimised for DoorDash's card-based listing format. Aligned promotions with Uber Eats calendar.</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-name">Skip the Dishes</div>
+        <div class="platform-role">Canadian reach</div>
+        <div class="platform-detail">Key for broader Canadian market coverage. Listing maintained with same brand standards. Used for incremental reach beyond core delivery zones.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 EXECUTION -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">04 · Execution</div>
+    <h2 class="cs-section-title">What building a food brand actually looks like.</h2>
+    <div class="cs-body-text" style="margin-bottom:40px;">
+      <p>This case was unusual because the work was genuinely full-stack — brand, creative, photography, copy, platform ops, social, and paid all lived in the same sprint. Here's how each layer was built and why the sequencing held.</p>
+    </div>
+
+    <div class="cs-phases">
+      <div class="cs-phase">
+        <div class="cs-phase-num">Layer 01</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Brand identity system</div>
+          <div class="cs-phase-desc">Built the complete visual identity — logo, colour palette, typography, and brand voice. The positioning was deliberate: bold, irreverent, and unapologetically flavour-forward. The name "Saucy Chicks" set a tone that the entire visual system had to honour. Brand guidelines documented before a single post went live to ensure consistency across every channel from day one.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Brand Identity</span>
+            <span class="cs-phase-tag">Visual System</span>
+            <span class="cs-phase-tag">Positioning</span>
+            <span class="cs-phase-tag">Brand Guidelines</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Layer 02</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Food photography and creative production</div>
+          <div class="cs-phase-desc">Directed the full product photography shoot — every menu item, every combo, hero shots and detail shots. Shot specifically for two use cases: platform listings (high-contrast, appetite-forward, optimised for small card format) and social/paid media (lifestyle framing, texture-focused, shareable). A single shoot produced the entire creative library used across all channels for the first 60 days.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Food Photography</span>
+            <span class="cs-phase-tag">Creative Direction</span>
+            <span class="cs-phase-tag">Content Production</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Layer 03</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Platform listing optimisation</div>
+          <div class="cs-phase-desc">Built all three platform listings from scratch — menu structure, item descriptions, pricing, photography upload, and promotion setup. Menu copy was written with search discoverability in mind: delivery platform algorithms surface restaurants based on item names and descriptions. Every description was written to be both conversion-optimised and keyword-rich for platform search.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Platform SEO</span>
+            <span class="cs-phase-tag">Conversion Copy</span>
+            <span class="cs-phase-tag">Menu Architecture</span>
+            <span class="cs-phase-tag">Promotions Strategy</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Layer 04</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Social content system</div>
+          <div class="cs-phase-desc">Launched Instagram and TikTok simultaneously. Content batched from the photography shoot, supplemented with video content showing preparation, texture, and sauce coverage — the visuals that drive food sharing behaviour. Established a content cadence that kept the feed active without requiring a constant production effort. Organic social was treated as an awareness and credibility engine, not a conversion channel.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Instagram</span>
+            <span class="cs-phase-tag">TikTok</span>
+            <span class="cs-phase-tag">Content Calendar</span>
+            <span class="cs-phase-tag">Video Production</span>
+          </div>
+        </div>
+      </div>
+      <div class="cs-phase">
+        <div class="cs-phase-num">Layer 05</div>
+        <div class="cs-phase-body">
+          <div class="cs-phase-title">Paid media and early order velocity</div>
+          <div class="cs-phase-desc">Meta campaigns launched once the brand had visual credibility. Targeted locally — food delivery is a hyper-local channel, and geographic targeting kept CAC efficient. Platform-native promotions on Uber Eats and DoorDash drove first orders and seeded the initial review base, which then fed the organic algorithm. Paid retargeted social engagers who hadn't ordered yet.</div>
+          <div class="cs-phase-tags">
+            <span class="cs-phase-tag">Meta Ads</span>
+            <span class="cs-phase-tag">Platform Promotions</span>
+            <span class="cs-phase-tag">Local Targeting</span>
+            <span class="cs-phase-tag">Retargeting</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creative system breakdown -->
+    <div class="creative-system" style="margin-top:40px;">
+      <div class="cs-sys-label">Creative system · What the photography shoot produced</div>
+      <div class="cs-sys-grid">
+        <div class="cs-sys-cell">
+          <div class="cs-sys-cell-title">Platform Listings</div>
+          <div class="cs-sys-cell-items">
+            <div class="cs-sys-cell-item">Hero item shots</div>
+            <div class="cs-sys-cell-item">Combo photography</div>
+            <div class="cs-sys-cell-item">Platform card format</div>
+            <div class="cs-sys-cell-item">High contrast, appetite-driven</div>
+          </div>
+        </div>
+        <div class="cs-sys-cell">
+          <div class="cs-sys-cell-title">Social Content</div>
+          <div class="cs-sys-cell-items">
+            <div class="cs-sys-cell-item">Feed posts · Grid planned</div>
+            <div class="cs-sys-cell-item">Story formats</div>
+            <div class="cs-sys-cell-item">Reels · Texture and sauce</div>
+            <div class="cs-sys-cell-item">60-day content batch</div>
+          </div>
+        </div>
+        <div class="cs-sys-cell">
+          <div class="cs-sys-cell-title">Paid Creative</div>
+          <div class="cs-sys-cell-items">
+            <div class="cs-sys-cell-item">Static ad formats</div>
+            <div class="cs-sys-cell-item">Video spots</div>
+            <div class="cs-sys-cell-item">Local area targeting</div>
+            <div class="cs-sys-cell-item">Retargeting variants</div>
+          </div>
+        </div>
+        <div class="cs-sys-cell">
+          <div class="cs-sys-cell-title">Brand Assets</div>
+          <div class="cs-sys-cell-items">
+            <div class="cs-sys-cell-item">Logo lockups</div>
+            <div class="cs-sys-cell-item">Packaging photography</div>
+            <div class="cs-sys-cell-item">Branded templates</div>
+            <div class="cs-sys-cell-item">Brand guidelines doc</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product photography grid -->
+    <div class="img-3col">
+      <!-- Replace these with: SaucyChicksCo_SandwichFourTendersAndFriesCombo.jpg, SaucyChicksCo_ChickenSandwichComboBox.jpg, IMG_7841.JPG / IMG_7842.JPG etc -->
+      <div class="img-cell">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="lbl">Tenders + Fries Combo</span>
+      </div>
+      <div class="img-cell">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="lbl">Sandwich Combo Box</span>
+      </div>
+      <div class="img-cell">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="lbl">Product detail shot</span>
+      </div>
+    </div>
+
+    <!-- Brand assets row -->
+    <div class="img-2col">
+      <div class="img-cell">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="lbl">Brand logo / monogram</span>
+      </div>
+      <div class="img-cell">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="lbl">Social feed / campaign creative</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 RESULTS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">05 · Results</div>
+    <h2 class="cs-section-title">Built from zero. Moved fast.</h2>
+    <div class="cs-body-text" style="margin-bottom:16px;">
+      <p>60 days from a blank page to a live brand generating content views, platform orders, and a growing social presence across three delivery apps. The sequenced build meant every channel was performing from the moment it launched — not ramping up from a weak start.</p>
+    </div>
+
+    <div class="cs-results">
+      <div class="cs-result">
+        <div class="cs-result-num orange">200K+</div>
+        <div class="cs-result-title">Content Views</div>
+        <div class="cs-result-desc">Across social and paid channels. Generated in 60 days from a zero-follower start. Organic and paid combined.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num teal">3</div>
+        <div class="cs-result-title">Platforms Live</div>
+        <div class="cs-result-desc">Uber Eats, DoorDash, and Skip the Dishes — all launched simultaneously with optimised listings, photography, and promotion strategies.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num orange">60</div>
+        <div class="cs-result-title">Days, Full Build</div>
+        <div class="cs-result-desc">Brand identity, photography, platform ops, social content, and paid media — all shipped within a single 60-day sprint from zero.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num teal">4</div>
+        <div class="cs-result-title">Creative Channels</div>
+        <div class="cs-result-desc">Photography, paid ads, social content, and platform listings — all running from a single coordinated creative shoot. No wasted production.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num orange">↑</div>
+        <div class="cs-result-title">Platform Visibility</div>
+        <div class="cs-result-desc">First reviews seeded through platform promotions, triggering algorithm improvement on Uber Eats and DoorDash within the first 30 days of launch.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num teal">1</div>
+        <div class="cs-result-title">Shoot, All Channels</div>
+        <div class="cs-result-desc">A single photography session produced every creative asset used across platforms, social, and paid for the full 60-day sprint. Zero waste, total efficiency.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 LEARNINGS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">06 · Learnings</div>
+    <h2 class="cs-section-title">What building from zero teaches you.</h2>
+
+    <div class="cs-learning">
+      <div class="cs-learning-num">L01</div>
+      <div class="cs-learning-text"><strong>Creative is a performance variable before it's an aesthetic one.</strong> In food delivery, the image on the listing card is the most important conversion asset in the entire funnel. Before the customer reads the description or the price, they've already judged the food. Getting the photography right before anything else was the single most important sequencing decision in this build.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L02</div>
+      <div class="cs-learning-text"><strong>Platform algorithms reward early velocity — so you have to manufacture it.</strong> Ghost kitchen brands can't rely on organic discovery from foot traffic. The only way to get into the Uber Eats algorithm is to generate early orders, which requires active promotion. Platform discounts and promotions at launch aren't margin giveaways — they're algorithm investment.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L03</div>
+      <div class="cs-learning-text"><strong>One well-planned shoot outperforms continuous content production.</strong> Batching 60 days of content from a single shoot is more efficient, more consistent, and higher quality than producing content piecemeal. The constraint of a single shoot forces better creative planning — you think harder about which shots you actually need, which produces a more purposeful content library.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L04</div>
+      <div class="cs-learning-text"><strong>Brand consistency from day one compounds faster than retrofitting it later.</strong> Setting brand guidelines before the first post and enforcing them across every channel — listing copy, social captions, ad creative — meant the brand felt established immediately, even with zero history. Audiences don't know you're new unless your brand tells them you are.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="cs-footer-nav">
+  <a href="tata-digital.html" class="cs-footer-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L7 2M2 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Tata Digital
+  </a>
+  <div style="text-align:right;">
+    <div class="cs-footer-label">Next case study</div>
+    <a href="questrade.html" class="cs-footer-next">
+      Questrade
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

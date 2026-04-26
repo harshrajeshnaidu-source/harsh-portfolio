@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life OS · Harsh Naidu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #666666;
+    --muted2: #444444;
+    --accent: #e8ff47;
+    --accent2: #47ffd4;
+    --accent3: #ff6b35;
+    --red: #ff4444;
+    --blue: #4499ff;
+    --purple: #9966ff;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--mono); font-size: 13px; color: var(--accent);
+    text-decoration: none; letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-tag {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 40px 60px;
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+  }
+  .hero-label {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: var(--sans); font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800; line-height: 1.05; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .hero-sub {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    line-height: 1.7; letter-spacing: 0.03em;
+  }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,255,71,0.08); border: 1px solid rgba(232,255,71,0.2);
+    border-radius: 4px; padding: 6px 12px; margin-top: 24px;
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* ── LEVEL CARD ── */
+  .level-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px;
+  }
+  .level-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+  .level-num {
+    font-family: var(--mono); font-size: 48px; font-weight: 700;
+    color: var(--accent); line-height: 1;
+  }
+  .level-label {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px;
+  }
+  .streak-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.25);
+    border-radius: 20px; padding: 8px 14px;
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    color: var(--accent3);
+  }
+  .xp-bar-wrap {
+    background: var(--border); border-radius: 4px; height: 6px;
+    overflow: hidden; margin-bottom: 8px;
+  }
+  .xp-bar-fill {
+    height: 100%; background: var(--accent); border-radius: 4px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+  }
+  .xp-labels {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+  }
+  .total-xp {
+    font-family: var(--mono); font-size: 11px; color: var(--muted2);
+    margin-top: 12px; letter-spacing: 0.05em;
+  }
+  .total-xp span { color: var(--muted); }
+
+  /* ── MAIN GRID ── */
+  .main {
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 40px 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .full-width { grid-column: 1 / -1; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── TODAY CARD ── */
+  .today-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px;
+  }
+  .today-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .today-date {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .today-big {
+    font-size: 40px; font-weight: 800; color: var(--accent);
+    line-height: 1; margin-top: 4px;
+  }
+  .today-sub {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    margin-top: 4px;
+  }
+  .today-xp {
+    font-family: var(--mono); font-size: 13px; color: var(--accent2);
+    font-weight: 700;
+  }
+  .rating-badge {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 6px; padding: 4px 10px;
+    margin-top: 6px; display: inline-block;
+  }
+
+  /* habit rows */
+  .habit-track { margin-bottom: 20px; }
+  .track-name {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .habit-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 6px;
+    background: var(--surface2); margin-bottom: 4px;
+    transition: background 0.2s;
+  }
+  .habit-row.done { background: rgba(232,255,71,0.06); }
+  .habit-emoji { font-size: 14px; width: 20px; text-align: center; }
+  .habit-name {
+    flex: 1; font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 0.04em;
+  }
+  .habit-row.done .habit-name { color: var(--text); }
+  .habit-xp {
+    font-family: var(--mono); font-size: 10px; color: var(--muted2);
+  }
+  .habit-row.done .habit-xp { color: var(--accent); }
+  .habit-check {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 1px solid var(--border2); background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .habit-row.done .habit-check {
+    background: var(--accent); border-color: var(--accent); color: #000;
+  }
+
+  /* ── HEATMAP ── */
+  .heatmap-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px;
+  }
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: 140px repeat(7, 1fr);
+    gap: 4px; align-items: center;
+  }
+  .heatmap-day-label {
+    font-family: var(--mono); font-size: 9px; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-align: center; padding: 4px 2px;
+  }
+  .heatmap-habit-label {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.04em; padding-right: 8px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .heatmap-cell {
+    aspect-ratio: 1; border-radius: 3px;
+    background: var(--border); transition: background 0.3s;
+  }
+  .heatmap-cell.done { background: var(--accent); }
+  .heatmap-cell.missed { background: var(--border); }
+
+  /* day summary row */
+  .heatmap-pct {
+    font-family: var(--mono); font-size: 9px; color: var(--muted);
+    text-align: center; padding-top: 6px;
+  }
+
+  /* ── TRACK AVERAGES ── */
+  .tracks-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px;
+  }
+  .track-row {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .track-row:last-child { margin-bottom: 0; }
+  .track-row-name {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    width: 100px; letter-spacing: 0.04em; flex-shrink: 0;
+  }
+  .track-bar-wrap {
+    flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+  }
+  .track-bar-fill {
+    height: 100%; border-radius: 2px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); width: 0%;
+  }
+  .track-pct {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    width: 36px; text-align: right; flex-shrink: 0;
+  }
+
+  /* track colors */
+  [data-track="Daily System"] .track-bar-fill { background: var(--accent); }
+  [data-track="Body"] .track-bar-fill { background: var(--accent3); }
+  [data-track="Job Hunt"] .track-bar-fill { background: var(--blue); }
+  [data-track="Portfolio"] .track-bar-fill { background: var(--accent2); }
+  [data-track="HPL"] .track-bar-fill { background: var(--purple); }
+  [data-track="Skills"] .track-bar-fill { background: #ff9944; }
+
+  /* ── WEEK VIEW ── */
+  .week-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 28px;
+  }
+  .week-days {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+  }
+  .week-day {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; padding: 12px 4px;
+    background: var(--surface2); border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .week-day.today-col { border-color: var(--accent); }
+  .week-day-name {
+    font-family: var(--mono); font-size: 9px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .week-day-pct {
+    font-family: var(--mono); font-size: 16px; font-weight: 700;
+    color: var(--text);
+  }
+  .week-day.today-col .week-day-pct { color: var(--accent); }
+  .week-day-xp {
+    font-family: var(--mono); font-size: 9px; color: var(--muted2);
+  }
+  .week-mini-bar {
+    width: 100%; height: 3px; background: var(--border); border-radius: 2px;
+    overflow: hidden;
+  }
+  .week-mini-fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  /* ── SYSTEM NOTE ── */
+  .note-card {
+    background: rgba(232,255,71,0.04); border: 1px solid rgba(232,255,71,0.15);
+    border-radius: 12px; padding: 28px;
+  }
+  .note-card p {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    line-height: 1.8; letter-spacing: 0.03em;
+  }
+
+  /* ── LOADING ── */
+  .loading-overlay {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; transition: opacity 0.5s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-inner { text-align: center; }
+  .loading-spinner {
+    width: 32px; height: 32px; border: 2px solid var(--border2);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ERROR STATE ── */
+  .error-banner {
+    background: rgba(255,68,68,0.08); border: 1px solid rgba(255,68,68,0.2);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 24px;
+    font-family: var(--mono); font-size: 11px; color: #ff8888;
+    display: none;
+  }
+
+  /* ── LAST UPDATED ── */
+  .last-updated {
+    font-family: var(--mono); font-size: 10px; color: var(--muted2);
+    text-align: center; padding: 24px 40px 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 120px 20px 40px; gap: 32px; }
+    .main { grid-template-columns: 1fr; padding: 0 20px 60px; }
+    .heatmap-grid { grid-template-columns: 100px repeat(7, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-inner">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">SYNCING WITH NOTION...</div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="https://buildingharsh.netlify.app/harsh_naidu_portfolio_v3">// HARSH NAIDU</a>
+  <div class="nav-links">
+    <a href="https://buildingharsh.netlify.app/harsh_naidu_portfolio_v3#work">Work</a>
+    <a href="https://buildingharsh.netlify.app/harsh_naidu_portfolio_v3#thinking">Thinking</a>
+    <a href="/system" class="active">System</a>
+    <a href="https://buildingharsh.netlify.app/harsh_naidu_portfolio_v3#about">About</a>
+    <a href="https://buildingharsh.netlify.app/harsh_naidu_portfolio_v3#contact">Contact</a>
+  </div>
+  <span class="nav-tag">Toronto · Open to opportunities</span>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div>
+    <div class="hero-label">System.09 · Life OS</div>
+    <h1>How I operate,<br>every day.</h1>
+    <p class="hero-sub">A public snapshot of my daily operating system.<br>12 habits across 6 tracks. Built for compounding, not perfection.</p>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE · SYNCED FROM NOTION
+    </div>
+  </div>
+
+  <!-- Level card -->
+  <div class="level-card">
+    <div class="level-header">
+      <div>
+        <div class="level-num" id="levelNum">—</div>
+        <div class="level-label">CURRENT LEVEL</div>
+      </div>
+      <div class="streak-pill">
+        🔥 <span id="streakNum">—</span> day streak
+      </div>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-fill" id="xpBarFill"></div>
+    </div>
+    <div class="xp-labels">
+      <span id="xpIntoLevel">— XP</span>
+      <span id="xpPerLevel">— XP</span>
+    </div>
+    <div class="total-xp">Total XP: <span id="totalXp">—</span></div>
+  </div>
+</div>
+
+<!-- Main grid -->
+<div class="main">
+
+  <!-- Error banner -->
+  <div class="error-banner full-width" id="errorBanner"></div>
+
+  <!-- TODAY -->
+  <div class="today-card">
+    <div class="section-label">Today</div>
+    <div class="today-header">
+      <div>
+        <div class="today-date" id="todayDate">—</div>
+        <div class="today-big" id="todayPct">—%</div>
+        <div class="today-sub" id="todaySub">— / 12 habits complete</div>
+      </div>
+      <div style="text-align:right">
+        <div class="today-xp" id="todayXp">+— XP</div>
+        <div class="rating-badge" id="todayRating">—</div>
+      </div>
+    </div>
+    <div id="habitsByTrack">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- TRACK AVERAGES -->
+  <div class="tracks-card">
+    <div class="section-label">7-day track averages</div>
+    <div id="trackAverages">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- WEEK VIEW -->
+  <div class="week-card full-width">
+    <div class="section-label">7-day window</div>
+    <div class="week-days" id="weekDays">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="heatmap-card full-width">
+    <div class="section-label">Habit heatmap · last 7 days</div>
+    <div class="heatmap-grid" id="heatmapGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- SYSTEM NOTE -->
+  <div class="note-card full-width">
+    <p>You are not behind. You are building. The coffee house is the engine — 4 hours a night, 5 nights a week, pointed at the right things in the right order. That is all this needs to be.</p>
+  </div>
+
+</div>
+
+<div class="last-updated">Last synced: <span id="lastUpdated">—</span></div>
+
+<script>
+// ── CONFIG ──
+// In production this hits your Netlify function.
+// For local dev, change to http://localhost:8888/api/habits
+const API_URL = '/api/habits';
+
+const TRACK_COLORS = {
+  'Daily System': '#e8ff47',
+  'Body':         '#ff6b35',
+  'Job Hunt':     '#4499ff',
+  'Portfolio':    '#47ffd4',
+  'HPL':          '#9966ff',
+  'Skills':       '#ff9944',
+};
+
+// ── UTILS ──
+function fmt(date) {
+  if (!date) return '—';
+  const d = new Date(date + 'T12:00:00');
+  return d.toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function shortDay(date) {
+  if (!date) return '—';
+  const d = new Date(date + 'T12:00:00');
+  return d.toLocaleDateString('en-CA', { weekday: 'short' }).toUpperCase();
+}
+
+// ── RENDER ──
+function renderLevel(data) {
+  document.getElementById('levelNum').textContent = data.level;
+  document.getElementById('streakNum').textContent = data.streak;
+  document.getElementById('totalXp').textContent = data.totalXP.toLocaleString() + ' XP';
+  document.getElementById('xpIntoLevel').textContent = data.xpIntoLevel + ' XP';
+  document.getElementById('xpPerLevel').textContent = data.xpPerLevel + ' XP';
+
+  setTimeout(() => {
+    const pct = (data.xpIntoLevel / data.xpPerLevel) * 100;
+    document.getElementById('xpBarFill').style.width = pct + '%';
+  }, 200);
+}
+
+function renderToday(data) {
+  if (!data.today) {
+    document.getElementById('todayDate').textContent = 'No entry today yet';
+    document.getElementById('todayPct').textContent = '—';
+    return;
+  }
+  const t = data.today;
+  document.getElementById('todayDate').textContent = fmt(t.date);
+  document.getElementById('todayPct').textContent = t.pct + '%';
+  document.getElementById('todaySub').textContent = `${t.count} / ${t.total} habits complete`;
+  document.getElementById('todayXp').textContent = `+${t.xp} XP earned today`;
+  document.getElementById('todayRating').textContent = t.rating || '—';
+
+  const container = document.getElementById('habitsByTrack');
+  container.innerHTML = '';
+
+  for (const trackData of data.todayTracks) {
+    const div = document.createElement('div');
+    div.className = 'habit-track';
+    div.innerHTML = `<div class="track-name">${trackData.track} · ${trackData.done}/${trackData.max}</div>`;
+
+    for (const h of trackData.habits) {
+      const row = document.createElement('div');
+      row.className = 'habit-row' + (h.done ? ' done' : '');
+      row.innerHTML = `
+        <div class="habit-emoji">${h.emoji}</div>
+        <div class="habit-name">${h.key}</div>
+        <div class="habit-xp">+10 XP</div>
+        <div class="habit-check">${h.done ? '✓' : ''}</div>
+      `;
+      div.appendChild(row);
+    }
+    container.appendChild(div);
+  }
+}
+
+function renderTrackAverages(data) {
+  const container = document.getElementById('trackAverages');
+  container.innerHTML = '';
+
+  for (const [track, pct] of Object.entries(data.trackAverages)) {
+    const color = TRACK_COLORS[track] || '#666';
+    const row = document.createElement('div');
+    row.className = 'track-row';
+    row.setAttribute('data-track', track);
+    row.innerHTML = `
+      <div class="track-row-name">${track}</div>
+      <div class="track-bar-wrap">
+        <div class="track-bar-fill" style="background:${color}; width:0%" data-pct="${pct}"></div>
+      </div>
+      <div class="track-pct">${pct}%</div>
+    `;
+    container.appendChild(row);
+  }
+
+  // Animate bars
+  setTimeout(() => {
+    container.querySelectorAll('.track-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 300);
+}
+
+function renderWeek(data) {
+  const container = document.getElementById('weekDays');
+  container.innerHTML = '';
+
+  // heatmap is newest-first, reverse for chronological display
+  const days = [...data.heatmap].reverse();
+
+  days.forEach((d, i) => {
+    const isToday = data.today && d.date === data.today.date;
+    const div = document.createElement('div');
+    div.className = 'week-day' + (isToday ? ' today-col' : '');
+    div.innerHTML = `
+      <div class="week-day-name">${shortDay(d.date)}</div>
+      <div class="week-day-pct" data-pct="${d.pct}">0%</div>
+      <div class="week-mini-bar"><div class="week-mini-fill" style="width:0%" data-pct="${d.pct}"></div></div>
+      <div class="week-day-xp">${d.xp} XP</div>
+    `;
+    container.appendChild(div);
+  });
+
+  // Animate counters
+  setTimeout(() => {
+    container.querySelectorAll('.week-day-pct').forEach(el => {
+      el.textContent = el.dataset.pct + '%';
+    });
+    container.querySelectorAll('.week-mini-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 400);
+}
+
+function renderHeatmap(data) {
+  const container = document.getElementById('heatmapGrid');
+  container.innerHTML = '';
+
+  // days newest-first → reverse for left-to-right chronological
+  const days = [...data.heatmap].reverse();
+
+  // Header row: empty label + day names
+  container.appendChild(Object.assign(document.createElement('div'), { className: 'heatmap-habit-label' }));
+  days.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'heatmap-day-label';
+    el.textContent = shortDay(d.date);
+    container.appendChild(el);
+  });
+
+  // One row per habit
+  for (const h of data.habits) {
+    const label = document.createElement('div');
+    label.className = 'heatmap-habit-label';
+    label.textContent = `${h.emoji} ${h.key}`;
+    container.appendChild(label);
+
+    for (const d of days) {
+      const cell = document.createElement('div');
+      const done = d.completed[h.key];
+      cell.className = 'heatmap-cell ' + (done ? 'done' : 'missed');
+      cell.title = `${h.key} · ${d.date} · ${done ? '✓' : '✗'}`;
+      container.appendChild(cell);
+    }
+  }
+
+  // Summary pct row
+  const summaryLabel = document.createElement('div');
+  summaryLabel.className = 'heatmap-habit-label';
+  summaryLabel.style.color = 'var(--muted2)';
+  summaryLabel.textContent = 'Day total';
+  container.appendChild(summaryLabel);
+
+  days.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'heatmap-pct';
+    el.textContent = d.pct + '%';
+    container.appendChild(el);
+  });
+}
+
+function renderLastUpdated(ts) {
+  const d = new Date(ts);
+  document.getElementById('lastUpdated').textContent =
+    d.toLocaleString('en-CA', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+// ── FETCH & INIT ──
+async function init() {
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+
+    renderLevel(data);
+    renderToday(data);
+    renderTrackAverages(data);
+    renderWeek(data);
+    renderHeatmap(data);
+    renderLastUpdated(data.lastUpdated);
+
+  } catch (err) {
+    console.error('Failed to load habit data:', err);
+    const banner = document.getElementById('errorBanner');
+    banner.style.display = 'block';
+    banner.textContent = `⚠ Could not sync with Notion: ${err.message}. Displaying cached data if available.`;
+  } finally {
+    setTimeout(() => {
+      document.getElementById('loadingOverlay').classList.add('hidden');
+    }, 400);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

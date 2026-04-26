@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="description" content="How I turned client operations into a pattern-recognition engine at Questrade — an IIROC-regulated investment platform."/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Questrade · Case Study · Harsh Naidu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0F1720;
+  --bg2:     #131E2A;
+  --surface: #182430;
+  --border:  #1E2D3D;
+  --teal:    #00A8A8;
+  --text:    #E6F1F2;
+  --text2:   #94A3B8;
+  --text3:   #4A6278;
+  --sans:    'Space Grotesk', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --max:     1100px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+/* NAV */
+nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(20px,4vw,60px); height:64px; background:rgba(15,23,32,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:var(--mono); font-size:13px; font-weight:700; letter-spacing:0.1em; text-decoration:none; color:var(--text); text-transform:uppercase; }
+.nav-logo .teal { color:var(--teal); }
+.nav-right { display:flex; align-items:center; gap:28px; }
+.nav-links { display:flex; gap:32px; }
+.nav-links a { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--text); font-weight:600; transition:color 0.2s; }
+.nav-links a:hover { color:var(--teal); }
+.nav-status { display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:10px; letter-spacing:0.08em; color:var(--text3); border:1px solid var(--border); padding:6px 12px; }
+.status-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 6px var(--teal); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.btn-nav { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:#0F1720; background:var(--teal); padding:10px 20px; transition:opacity 0.2s; }
+.btn-nav:hover { opacity:0.85; }
+
+/* HERO */
+.cs-hero { border-bottom:1px solid var(--border); padding:80px clamp(20px,4vw,60px) 64px; position:relative; overflow:hidden; }
+.cs-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 40% 50% at 100% 50%, rgba(0,168,168,0.05) 0%, transparent 70%), radial-gradient(ellipse 30% 40% at 0% 20%, rgba(0,168,168,0.04) 0%, transparent 60%); pointer-events:none; }
+.cs-hero-inner { max-width:var(--max); margin:0 auto; position:relative; }
+
+.cs-breadcrumb { display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text3); margin-bottom:32px; }
+.cs-breadcrumb a { color:var(--text3); text-decoration:none; transition:color 0.2s; }
+.cs-breadcrumb a:hover { color:var(--teal); }
+.cs-breadcrumb span { color:var(--border); }
+
+.cs-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--teal); border:1px solid rgba(0,168,168,0.3); padding:5px 12px; margin-bottom:20px; }
+.cs-title { font-family:var(--sans); font-size:clamp(40px,6vw,80px); font-weight:700; letter-spacing:-0.04em; line-height:0.95; margin-bottom:28px; }
+.cs-title span { color:var(--teal); }
+.cs-lead { font-family:var(--sans); font-size:clamp(16px,2vw,20px); color:var(--text2); max-width:640px; line-height:1.6; margin-bottom:48px; }
+
+/* STATS */
+.cs-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); max-width:800px; }
+@media(max-width:600px){ .cs-stats { grid-template-columns:repeat(2,1fr); } }
+.cs-stat { background:var(--bg2); padding:24px 28px; }
+.cs-stat-num { font-family:var(--sans); font-size:clamp(24px,3vw,38px); font-weight:700; color:var(--teal); letter-spacing:-0.03em; line-height:1; margin-bottom:6px; }
+.cs-stat-label { font-family:var(--mono); font-size:10px; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; line-height:1.5; }
+
+/* META */
+.cs-meta-row { display:flex; gap:40px; flex-wrap:wrap; margin-top:48px; padding-top:32px; border-top:1px solid var(--border); }
+.cs-meta-item { display:flex; flex-direction:column; gap:5px; }
+.cs-meta-label { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text3); }
+.cs-meta-value { font-family:var(--mono); font-size:12px; color:var(--text2); letter-spacing:0.05em; }
+
+/* BODY */
+.cs-body { max-width:var(--max); margin:0 auto; padding:0 clamp(20px,4vw,60px) 80px; }
+.cs-section { padding:64px 0; border-bottom:1px solid var(--border); }
+.cs-section:last-child { border-bottom:none; }
+.cs-section-label { font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.cs-section-label::after { content:''; flex:1; height:1px; background:var(--border); max-width:60px; }
+.cs-section-title { font-family:var(--sans); font-size:clamp(24px,3vw,36px); font-weight:700; letter-spacing:-0.025em; color:var(--text); margin-bottom:24px; line-height:1.1; }
+.cs-body-text { font-family:var(--sans); font-size:16px; color:var(--text2); line-height:1.75; max-width:680px; }
+.cs-body-text p { margin-bottom:16px; }
+.cs-body-text p:last-child { margin-bottom:0; }
+.cs-body-text strong { color:var(--text); font-weight:600; }
+
+/* TWO COL */
+.cs-two-col { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.cs-two-col.wide-left { grid-template-columns:3fr 2fr; }
+@media(max-width:720px){ .cs-two-col, .cs-two-col.wide-left { grid-template-columns:1fr; } }
+
+/* CALLOUT */
+.cs-callout { background:rgba(0,168,168,0.05); border-left:3px solid var(--teal); padding:24px 28px; margin:32px 0; }
+.cs-callout p { font-family:var(--mono); font-size:13px; color:var(--text2); line-height:1.7; letter-spacing:0.02em; }
+.cs-callout strong { color:var(--teal); }
+
+/* LIST */
+.cs-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+.cs-list li { display:flex; gap:14px; align-items:flex-start; font-family:var(--sans); font-size:15px; color:var(--text2); line-height:1.5; }
+.cs-list li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--teal); flex-shrink:0; margin-top:8px; }
+
+/* FRAMEWORK DIAGRAM */
+.framework { display:flex; flex-direction:column; gap:0; }
+.fw-step { display:grid; grid-template-columns:56px 1fr; gap:0; position:relative; }
+.fw-step-connector { position:absolute; left:27px; top:60px; bottom:-1px; width:2px; background:var(--border); z-index:0; }
+.fw-step:last-child .fw-step-connector { display:none; }
+.fw-step.active .fw-step-connector { background:linear-gradient(to bottom, var(--teal), var(--border)); }
+.fw-num-col { display:flex; flex-direction:column; align-items:center; padding-top:20px; z-index:1; }
+.fw-num-circle { width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.1em; border:1px solid var(--border); background:var(--bg2); color:var(--text3); flex-shrink:0; }
+.fw-step.active .fw-num-circle { background:var(--teal); border-color:var(--teal); color:#0F1720; font-weight:700; }
+.fw-body { padding:20px 0 32px 24px; border-bottom:1px solid var(--border); }
+.fw-step:last-child .fw-body { border-bottom:none; }
+.fw-title { font-family:var(--sans); font-size:17px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.fw-step.active .fw-title { color:var(--teal); }
+.fw-desc { font-family:var(--sans); font-size:14px; color:var(--text2); line-height:1.65; }
+.fw-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.fw-tag { font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); border:1px solid var(--border); padding:4px 10px; }
+.fw-step.active .fw-tag { border-color:rgba(0,168,168,0.3); color:var(--teal); }
+
+/* SIGNAL TABLE */
+.signal-table { width:100%; border-collapse:collapse; border:1px solid var(--border); margin:32px 0; }
+.signal-table th { font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text3); padding:14px 20px; text-align:left; background:var(--surface); border-bottom:1px solid var(--border); }
+.signal-table td { font-family:var(--mono); font-size:12px; color:var(--text2); padding:14px 20px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.5; }
+.signal-table tr:last-child td { border-bottom:none; }
+.signal-table tr:hover td { background:rgba(0,168,168,0.03); }
+.signal-table td:first-child { color:var(--text); font-weight:500; }
+.signal-table .tag-teal { color:var(--teal); font-weight:600; }
+.signal-table .tag-amber { color:#f59e0b; }
+.signal-table .tag-muted { color:var(--text3); }
+
+/* RESULTS */
+.cs-results { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:40px; }
+@media(max-width:600px){ .cs-results { grid-template-columns:1fr; } }
+.cs-result { background:var(--bg2); padding:28px 24px; }
+.cs-result-num { font-family:var(--sans); font-size:36px; font-weight:700; color:var(--teal); letter-spacing:-0.03em; line-height:1; margin-bottom:8px; }
+.cs-result-title { font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:6px; }
+.cs-result-desc { font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6; }
+
+/* CONTEXT CARDS */
+.context-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin:32px 0; }
+@media(max-width:600px){ .context-cards { grid-template-columns:1fr; } }
+.ctx-card { background:var(--bg2); padding:24px 22px; }
+.ctx-num { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:0.18em; margin-bottom:10px; }
+.ctx-title { font-family:var(--sans); font-size:15px; font-weight:600; color:var(--text); margin-bottom:8px; }
+.ctx-desc { font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.65; }
+
+/* LEARNINGS */
+.cs-learning { display:grid; grid-template-columns:40px 1fr; gap:20px; align-items:start; padding:24px 0; border-bottom:1px solid var(--border); }
+.cs-learning:last-child { border-bottom:none; }
+.cs-learning-num { font-family:var(--mono); font-size:11px; color:var(--teal); letter-spacing:0.1em; padding-top:2px; }
+.cs-learning-text { font-family:var(--sans); font-size:15px; color:var(--text2); line-height:1.65; }
+.cs-learning-text strong { color:var(--text); font-weight:600; }
+
+/* NOTE BLOCK */
+.note-block { background:rgba(0,168,168,0.04); border:1px solid rgba(0,168,168,0.15); padding:24px 28px; margin-top:32px; }
+.note-block-label { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:10px; }
+.note-block-text { font-family:var(--mono); font-size:12px; color:var(--text3); line-height:1.8; }
+
+/* FOOTER NAV */
+.cs-footer-nav { border-top:1px solid var(--border); padding:40px clamp(20px,4vw,60px); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.cs-footer-back { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--text3); transition:color 0.2s; display:flex; align-items:center; gap:8px; }
+.cs-footer-back:hover { color:var(--teal); }
+.cs-footer-all { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--teal); transition:opacity 0.2s; display:flex; align-items:center; gap:8px; border:1px solid rgba(0,168,168,0.3); padding:10px 20px; }
+.cs-footer-all:hover { opacity:0.75; }
+.cs-footer-label { font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--text3); margin-bottom:4px; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="harsh_naidu_portfolio_v3.html"><span class="teal">//</span> HARSH NAIDU</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <a href="harsh_naidu_portfolio_v3.html#thinking">Thinking</a>
+      <a href="system.html">System</a>
+      <a href="harsh_naidu_portfolio_v3.html#about">About</a>
+      <a href="harsh_naidu_portfolio_v3.html#contact">Contact</a>
+    </div>
+    <div class="nav-status"><span class="status-dot"></span>Toronto · Open to opportunities</div>
+    <a href="harsh_naidu_portfolio_v3.html#contact" class="btn-nav">Let's talk →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-hero-inner">
+
+    <div class="cs-breadcrumb">
+      <a href="harsh_naidu_portfolio_v3.html#work">Work</a>
+      <span>/</span>
+      <span style="color:var(--text2)">Case 04 of 04</span>
+      <span>/</span>
+      <span style="color:var(--text)">Questrade</span>
+    </div>
+
+    <div class="cs-tag">Fintech · Operations · Systems Thinking</div>
+    <h1 class="cs-title">Every ticket<br>is a <span>data point.</span><br>Not a problem.</h1>
+    <p class="cs-lead">At Questrade — one of Canada's largest investment platforms — I turned client service operations into a pattern-recognition engine. Instead of resolving issues one by one, I built a system that treated every case as a signal, detected cross-case patterns, and fed those insights back into process improvements that prevented the next hundred.</p>
+
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-num">IIROC</div>
+        <div class="cs-stat-label">Regulated<br>environment</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">↓</div>
+        <div class="cs-stat-label">Repeat issue<br>rate reduced</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">4</div>
+        <div class="cs-stat-label">Step investigation<br>framework built</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-num">→</div>
+        <div class="cs-stat-label">Issues to<br>system fixes</div>
+      </div>
+    </div>
+
+    <div class="cs-meta-row">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Company</span>
+        <span class="cs-meta-value">Questrade Financial Group</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Industry</span>
+        <span class="cs-meta-value">Fintech · Investment Platform</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Role</span>
+        <span class="cs-meta-value">Client Operations · Investigations</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Environment</span>
+        <span class="cs-meta-value">IIROC regulated · High-stakes precision</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Key Skill</span>
+        <span class="cs-meta-value">Pattern recognition · Process design</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="cs-body">
+
+  <!-- 01 CONTEXT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">01 · Context</div>
+    <div class="cs-two-col wide-left">
+      <div>
+        <h2 class="cs-section-title">A regulated investment platform where precision is non-negotiable.</h2>
+        <div class="cs-body-text">
+          <p>Questrade is one of Canada's largest online investment brokerages, serving hundreds of thousands of retail investors with self-directed trading, managed portfolios, and foreign exchange services. It operates under IIROC regulatory oversight — one of the strictest compliance frameworks in Canadian financial services.</p>
+          <p>In this environment, a client issue isn't just an unhappy customer — it's a potential regulatory event. Every case involving account access, trade execution, fund movement, or reporting discrepancy carries real stakes: client financial risk, regulatory exposure, and reputational consequence if handled incorrectly or resolved too slowly.</p>
+          <p>My role sat at the intersection of client operations and internal process improvement. I handled complex investigations — not the first-tier "how do I log in" inquiries, but the cases that required tracing exactly <strong>what happened, why it happened, where in the system it broke, and how to prevent it recurring.</strong></p>
+        </div>
+      </div>
+      <div>
+        <div class="cs-callout">
+          <p><strong>The environment in one sentence:</strong> In a regulated fintech, every client issue is simultaneously a service problem, a data signal, and a potential compliance event. Resolving it fast isn't enough — resolving it correctly, documenting it precisely, and learning from it systematically is the whole job.</p>
+        </div>
+        <div style="margin-top:20px; padding:20px; background:var(--surface); border:1px solid var(--border);">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text3); margin-bottom:14px;">Operating constraints</div>
+          <ul class="cs-list">
+            <li>IIROC regulatory framework — documentation and accuracy mandatory</li>
+            <li>Issues involving real client funds and trading accounts</li>
+            <li>Zero tolerance for repeated systemic failures</li>
+            <li>Resolution accuracy more important than speed alone</li>
+            <li>Every case a potential pattern in a larger system problem</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 PROBLEM -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">02 · Problem</div>
+    <h2 class="cs-section-title">Tickets were being closed. Patterns weren't being read.</h2>
+    <div class="cs-two-col">
+      <div class="cs-body-text">
+        <p>Client service operations at scale face a structural trap: the volume of incoming issues creates pressure to resolve and close as quickly as possible. Efficiency becomes measured by throughput — cases closed per day, average handle time, queue depth.</p>
+        <p>The problem with that frame is that it treats every issue as independent. <strong>It doesn't ask whether ten different clients reporting slightly different symptoms are actually encountering the same underlying system failure.</strong> Individual tickets get closed. The root cause generating them stays open.</p>
+        <p>At Questrade, the issues coming in weren't random. Account access problems clustered after platform updates. Trade execution discrepancies appeared more frequently in specific instrument categories. Reporting errors tracked to particular account types. But without a framework for cross-case pattern detection, each case was being resolved individually — the same fix applied repeatedly, to new instances of the same problem.</p>
+        <p>The cost wasn't just operational inefficiency. In a regulated environment, recurring systemic issues that aren't identified and addressed carry increasing compliance risk with each repetition.</p>
+      </div>
+      <div>
+        <div style="background:var(--surface); border:1px solid var(--border); padding:28px;">
+          <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text3); margin-bottom:20px;">The gap in the existing approach</div>
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div>
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">Tickets resolved, not analysed</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">Each case closed in isolation. No cross-case reading for common signals or root cause clustering.</div>
+            </div>
+            <div style="border-top:1px solid var(--border); padding-top:20px;">
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">Root causes not surfaced</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">Fixes applied to symptoms. Underlying system or process failures generating them went unaddressed.</div>
+            </div>
+            <div style="border-top:1px solid var(--border); padding-top:20px;">
+              <div style="font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin-bottom:5px;">No improvement loop</div>
+              <div style="font-family:var(--mono); font-size:11px; color:var(--text3); line-height:1.6;">Insights from investigations weren't feeding back into process or system changes. The cycle repeated.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 STRATEGY -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">03 · Strategy</div>
+    <h2 class="cs-section-title">Treat every issue as a data point in a larger system.</h2>
+    <div class="cs-body-text" style="margin-bottom:40px;">
+      <p>The strategic reframe was precise: stop thinking of client issues as problems to resolve, and start treating them as signals to read. A single ticket tells you about one client's experience. A hundred tickets, pattern-matched correctly, tell you something is structurally wrong — and where.</p>
+      <p>I built a four-step investigation framework that changed how cases moved from intake to closure — adding a pattern-detection layer and a feedback loop that didn't exist before.</p>
+    </div>
+
+    <!-- Framework diagram -->
+    <div class="framework" style="max-width:680px;">
+
+      <div class="fw-step">
+        <div class="fw-step-connector"></div>
+        <div class="fw-num-col"><div class="fw-num-circle">01</div></div>
+        <div class="fw-body">
+          <div class="fw-title">Issue received — intake, categorise, prioritise</div>
+          <div class="fw-desc">Every incoming case logged with structured metadata: issue type, account category, product affected, channel of origin, and initial severity flag. Categorisation isn't just filing — it's the first layer of pattern data. Cases that look different on the surface often share a category signature that points to a common root.</div>
+          <div class="fw-tags">
+            <span class="fw-tag">Intake</span>
+            <span class="fw-tag">Categorisation</span>
+            <span class="fw-tag">Priority Triage</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-step">
+        <div class="fw-step-connector"></div>
+        <div class="fw-num-col"><div class="fw-num-circle">02</div></div>
+        <div class="fw-body">
+          <div class="fw-title">Investigate root cause — data, process, or system</div>
+          <div class="fw-desc">Every case traced to its actual failure point — not the symptom the client reported, but the source of that symptom. Three possible origins: a data error (wrong information in a field or record), a process failure (something was done incorrectly or out of sequence), or a system failure (a platform or integration bug). Root cause determines resolution path and documentation requirements.</div>
+          <div class="fw-tags">
+            <span class="fw-tag">Root Cause Analysis</span>
+            <span class="fw-tag">Data Investigation</span>
+            <span class="fw-tag">Process Tracing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-step active">
+        <div class="fw-step-connector"></div>
+        <div class="fw-num-col"><div class="fw-num-circle">03</div></div>
+        <div class="fw-body">
+          <div class="fw-title">Detect patterns — cross-case signal recognition</div>
+          <div class="fw-desc">The layer that didn't exist before. Before closing a case, it was cross-referenced against recent cases of the same category, product, and root cause type. Three or more cases sharing a root cause within a rolling window triggered a formal pattern flag — escalated for systemic review rather than individual resolution. This is where individual tickets became system intelligence.</div>
+          <div class="fw-tags">
+            <span class="fw-tag">Pattern Recognition</span>
+            <span class="fw-tag">Cross-case Analysis</span>
+            <span class="fw-tag">Signal Detection</span>
+            <span class="fw-tag">Escalation Framework</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-step">
+        <div class="fw-num-col"><div class="fw-num-circle">04</div></div>
+        <div class="fw-body">
+          <div class="fw-title">System improvement — insight to process fix, documented</div>
+          <div class="fw-desc">Pattern flags triggered structured improvement cycles: identify the systemic failure, document the fix or process change required, implement with the relevant team, and close the loop with a documented record. This created a feedback mechanism where client issues directly drove operational improvement — not occasionally, but systematically, every time a pattern was detected.</div>
+          <div class="fw-tags">
+            <span class="fw-tag">Process Improvement</span>
+            <span class="fw-tag">Documentation</span>
+            <span class="fw-tag">Cross-functional Collaboration</span>
+            <span class="fw-tag">Feedback Loop</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cs-callout" style="margin-top:40px; max-width:680px;">
+      <p><strong>The key insight:</strong> The investigation framework didn't slow down case resolution — it added a parallel analysis layer. Individual cases were still resolved at the same pace. But the pattern-detection step meant that systemic issues were caught earlier, escalated correctly, and fixed upstream rather than resolved downstream over and over.</p>
+    </div>
+  </div>
+
+  <!-- 04 EXECUTION -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">04 · Execution</div>
+    <h2 class="cs-section-title">What pattern-recognition looks like in practice.</h2>
+    <div class="cs-body-text" style="margin-bottom:40px;">
+      <p>The framework was applied across a range of issue categories that are common in retail investment platforms. Below is a representative cross-section of the signal types I worked with — illustrating how the same four-step framework produced different outcomes depending on whether the root cause was data, process, or system.</p>
+    </div>
+
+    <!-- Signal table -->
+    <table class="signal-table">
+      <thead>
+        <tr>
+          <th>Issue Category</th>
+          <th>Common Surface Symptom</th>
+          <th>Root Cause Type</th>
+          <th>Pattern Trigger</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Account access</td>
+          <td>Client locked out post-update</td>
+          <td><span class="tag-amber">System</span></td>
+          <td>Clustered after platform releases — flagged as deployment regression</td>
+        </tr>
+        <tr>
+          <td>Trade execution</td>
+          <td>Order not filled at expected price</td>
+          <td><span class="tag-teal">Data</span></td>
+          <td>Specific instrument type → market data feed latency identified</td>
+        </tr>
+        <tr>
+          <td>Fund movement</td>
+          <td>Transfer delayed or missing</td>
+          <td><span class="tag-amber">Process</span></td>
+          <td>Particular account type → manual step in workflow missing documentation</td>
+        </tr>
+        <tr>
+          <td>Reporting discrepancy</td>
+          <td>Account balance display error</td>
+          <td><span class="tag-teal">Data</span></td>
+          <td>Tracked to specific currency conversion calculation — integration bug</td>
+        </tr>
+        <tr>
+          <td>Compliance documentation</td>
+          <td>Missing or incomplete records</td>
+          <td><span class="tag-amber">Process</span></td>
+          <td>Onboarding flow step — checklist gap identified and documented</td>
+        </tr>
+        <tr>
+          <td>Notification failure</td>
+          <td>Client didn't receive required alert</td>
+          <td><span class="tag-amber">System</span></td>
+          <td>Email delivery failure in specific account segment — infra issue escalated</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cs-two-col" style="margin-top:40px;">
+      <div class="cs-body-text">
+        <p><strong>The regulated environment added a layer of precision to everything.</strong> In a standard client service role, a resolved case might mean the client is satisfied and the ticket is closed. At Questrade, resolution meant: the client's situation is corrected, the root cause is documented, the regulatory record is complete, and the fix is traceable if audited.</p>
+        <p>This standard made the pattern-detection work more impactful, not less. Because every case was already documented with precision, cross-case analysis could be done on clean, structured data — not informal notes. The compliance requirement that felt like overhead was actually the infrastructure that made systemic improvement possible.</p>
+      </div>
+      <div class="cs-body-text">
+        <p><strong>Working cross-functionally was essential.</strong> When a pattern flag identified a system failure, the fix required coordination with product, engineering, or compliance teams — not just the operations function. Building credibility as someone who came to those conversations with precise root cause data, not just a complaint about volume, made those collaborations productive rather than territorial.</p>
+        <p>The improvement loop worked because it was grounded in evidence. "We're seeing 14 cases in the last 10 days with the same root cause in the currency conversion calculation" is a different conversation than "clients keep complaining about balance display." One is a data-backed escalation. The other is noise.</p>
+      </div>
+    </div>
+
+    <!-- Context cards -->
+    <div class="context-cards" style="margin-top:48px;">
+      <div class="ctx-card">
+        <div class="ctx-num">Context 01</div>
+        <div class="ctx-title">Why regulated environments demand more precision</div>
+        <div class="ctx-desc">Every investigation record at Questrade was a potential audit document. Accuracy wasn't a quality standard — it was a regulatory requirement. This forced a level of rigour in root cause documentation that made the pattern data genuinely reliable.</div>
+      </div>
+      <div class="ctx-card">
+        <div class="ctx-num">Context 02</div>
+        <div class="ctx-title">Why pattern detection requires volume to work</div>
+        <div class="ctx-desc">A single case is an anecdote. Three cases with the same root cause is a signal. Ten is a system failure. The framework only works because Questrade's scale provided enough case volume for patterns to emerge in statistically meaningful windows.</div>
+      </div>
+      <div class="ctx-card">
+        <div class="ctx-num">Context 03</div>
+        <div class="ctx-title">Why the feedback loop was the most valuable part</div>
+        <div class="ctx-desc">Without the improvement loop, pattern detection would have been an interesting observation with no operational consequence. The loop — pattern detected, escalated, fixed, documented — is what turned client intelligence into actual system improvement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 RESULTS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">05 · Results</div>
+    <h2 class="cs-section-title">Issues stopped recurring. Patterns became fixes.</h2>
+    <div class="cs-body-text" style="margin-bottom:16px;">
+      <p>The most significant result wasn't a single metric — it was a structural change in how issues moved through the system. Cases that would previously have cycled through resolution repeatedly began triggering systemic fixes that eliminated the source entirely.</p>
+    </div>
+
+    <div class="cs-results">
+      <div class="cs-result">
+        <div class="cs-result-num">↓</div>
+        <div class="cs-result-title">Repeat Issue Rate</div>
+        <div class="cs-result-desc">Systemic failures identified and fixed upstream rather than resolved downstream repeatedly. Recurrence rate for pattern-flagged issue types dropped significantly after feedback loop implementation.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">4</div>
+        <div class="cs-result-title">Step Framework</div>
+        <div class="cs-result-desc">A structured investigation model that converted individual case resolution into systemic intelligence — intake, root cause, pattern detection, improvement loop.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">3×</div>
+        <div class="cs-result-title">Case-to-Insight Conversion</div>
+        <div class="cs-result-desc">Pattern flags generated from cross-case analysis that each led to a documented process or system improvement — not just a resolved ticket.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">100%</div>
+        <div class="cs-result-title">Regulatory Compliance</div>
+        <div class="cs-result-desc">Every investigation documented to IIROC standards. No compliance findings related to investigation record quality or escalation process during the engagement.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">↑</div>
+        <div class="cs-result-title">Cross-functional Impact</div>
+        <div class="cs-result-desc">Pattern-backed escalations to product and engineering teams — credible, data-grounded, and actionable. Shifted the ops-to-product relationship from reactive complaint to structured intelligence input.</div>
+      </div>
+      <div class="cs-result">
+        <div class="cs-result-num">0</div>
+        <div class="cs-result-title">Missed Pattern Flags</div>
+        <div class="cs-result-desc">The cross-case review layer ensured no pattern-threshold breach went undetected or unescalated during the framework's operation. Systemic issues caught every time.</div>
+      </div>
+    </div>
+
+    <div class="note-block">
+      <div class="note-block-label">A note on metrics in regulated environments</div>
+      <div class="note-block-text">Specific case volumes and internal performance metrics from a regulated financial institution aren't publicly shareable. The results above describe the structural outcomes of the investigation framework — directional improvements that are accurate, even where precise figures stay internal.</div>
+    </div>
+  </div>
+
+  <!-- 06 LEARNINGS -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">06 · Learnings</div>
+    <h2 class="cs-section-title">What working in a regulated environment teaches you.</h2>
+
+    <div class="cs-learning">
+      <div class="cs-learning-num">L01</div>
+      <div class="cs-learning-text"><strong>Precision is a transferable skill.</strong> The level of documentation accuracy required in an IIROC-regulated environment is higher than almost any other professional context. Once you've worked to that standard — where every claim needs to be traceable, every resolution needs to be auditable — it changes how you approach data and evidence in every subsequent role. The discipline compounds.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L02</div>
+      <div class="cs-learning-text"><strong>The most valuable thing you can do with a problem is ask whether it's actually one problem or a hundred problems with the same root.</strong> Most operational environments are optimised to close tickets fast. The slow, counterintuitive move is to pause before closing and ask: have I seen this before? Is something generating this systematically? That question — asked consistently — is where operations becomes strategy.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L03</div>
+      <div class="cs-learning-text"><strong>Compliance requirements and good data practices aren't in tension — they're the same thing.</strong> The regulatory documentation standards at Questrade felt like overhead until I realised they were the infrastructure that made systemic analysis possible. Clean, structured, mandatory records are the foundation of any pattern-detection system. The constraint was the capability.</div>
+    </div>
+    <div class="cs-learning">
+      <div class="cs-learning-num">L04</div>
+      <div class="cs-learning-text"><strong>Systems thinking applies everywhere — not just in marketing.</strong> The same mental model I used at Questrade — treat every data point as a signal in a larger system, look for patterns before drawing conclusions, build feedback loops that improve the system not just the symptom — is the exact frame I bring to growth work. The contexts are different. The thinking is identical.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="cs-footer-nav">
+  <a href="saucy-chicks.html" class="cs-footer-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L7 2M2 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Saucy Chicks
+  </a>
+  <a href="harsh_naidu_portfolio_v3.html#work" class="cs-footer-all">
+    All case studies
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </a>
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
